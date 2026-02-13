@@ -203,28 +203,19 @@ export MOCKFACTORY_API_KEY="mf_..."
 
 ---
 
-## 🚧 To Complete Deployment
+## ✅ Deployment Complete!
 
-**NOTE**: SSH access to 141.148.79.30 is required for final deployment.
+**Deployed to**: https://mockfactory.io (129.213.31.167)
 
-### Option 1: Docker Compose Deployment
-```bash
-# On server with SSH access:
-SERVER_IP=141.148.79.30 ./deploy-with-ai.sh
-```
+All features are now live and accessible:
+- ✅ Login page: https://mockfactory.io/login.html
+- ✅ Dashboard: https://mockfactory.io/dashboard.html
+- ✅ Health endpoint: https://mockfactory.io/health
+- ✅ API documentation: https://mockfactory.io/docs
 
-### Option 2: Kubernetes Deployment
-```bash
-# On machine with kubectl access to OKE:
-./deploy-k8s-update.sh
-```
-
-### Option 3: Manual Deployment
-1. SSH to server: `ssh ubuntu@141.148.79.30`
-2. Clone repo: `git clone https://github.com/afterdarksys/mockfactory.io`
-3. Copy `.env` file with secrets
-4. Run: `docker-compose -f docker-compose.prod.yml up -d`
-5. Run migrations: `alembic upgrade head`
+### Deployment Method Used
+Files deployed via SCP to `opc@129.213.31.167:~/mockfactory/`
+Docker containers rebuilt and restarted with updated code.
 
 ---
 
