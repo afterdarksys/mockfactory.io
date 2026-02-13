@@ -20,3 +20,4 @@ faker==22.6.0
 mysql-connector-python==8.3.0
 slowapi==0.1.9
 anthropic==0.39.0
+oci==2.119.1
