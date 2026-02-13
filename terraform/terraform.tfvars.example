@@ -1,0 +1,54 @@
+# OCI Provider Configuration
+# Copy this file to terraform.tfvars and fill in your values
+
+tenancy_ocid  = "ocid1.tenancy.oc1..aaaaaaaXXXXXXXXXXXXXXXXXXXXX"
+user_ocid     = "ocid1.user.oc1..aaaaaaaXXXXXXXXXXXXXXXXXXXXX"
+fingerprint   = "XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX"
+private_key_path = "~/.oci/oci_api_key.pem"
+region        = "us-ashburn-1"
+
+# Compartment OCIDs
+core_compartment_ocid = "ocid1.compartment.oc1..aaaaaaaXXXXXXXXXXXXXXXXXXXXX"
+mock_compartment_ocid = "ocid1.compartment.oc1..aaaaaaaXXXXXXXXXXXXXXXXXXXXX"
+
+# Environment
+environment = "production"
+domain_name = "mockfactory.io"
+
+# OKE Cluster
+oke_cluster_name = "mockfactory-cluster"
+kubernetes_version = "v1.28.2"
+node_pool_size = 14
+node_shape = "VM.Standard.E4.Flex"
+node_ocpus = 2
+node_memory_gb = 16
+
+# Network
+vcn_cidr = "10.0.0.0/16"
+public_subnet_cidr = "10.0.1.0/24"
+private_subnet_cidr = "10.0.2.0/24"
+
+# Load Balancer
+lb_shape = "flexible"
+lb_min_bandwidth_mbps = 10
+lb_max_bandwidth_mbps = 100
+
+# Storage
+bucket_name = "mockfactory-cloud-emulation"
+bucket_storage_tier = "Standard"
+
+# Database
+postgres_shape = "VM.Standard.E4.Flex"
+postgres_storage_gb = 100
+
+# Auto-Shutdown (for dev environments)
+enable_auto_shutdown = true
+auto_shutdown_time = "02:00"
+
+# Tags
+common_tags = {
+  Project     = "MockFactory"
+  ManagedBy   = "Terraform"
+  Environment = "production"
+  Owner       = "your-email@example.com"
+}

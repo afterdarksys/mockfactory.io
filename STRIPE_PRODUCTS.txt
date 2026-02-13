@@ -1,0 +1,32 @@
+🎉 Stripe Products Created Successfully!
+==========================================
+
+Add these to your .env file:
+
+# Professional Tier - $19.99/month, 100 executions
+STRIPE_PRODUCT_PROFESSIONAL=prod_TwSnP2zvU6EZyW
+STRIPE_PRICE_PROFESSIONAL=price_1SyeXnRzkrRnzwVv1arzLFJb
+
+# Government Tier - $49.99/month, 500 executions
+STRIPE_PRODUCT_GOVERNMENT=prod_TwXeoGOgLRUGsu
+STRIPE_PRICE_GOVERNMENT=price_1SyejTRzkrRnzwVvk17pxCWn
+
+# Enterprise Tier - $99.99/month, unlimited executions
+STRIPE_PRODUCT_ENTERPRISE=prod_TwY3j6hqzh4gaA
+STRIPE_PRICE_ENTERPRISE=price_1SyeyiRzkrRnzwVvHYM4Kif4
+
+==========================================
+
+Next Steps:
+1. Copy these values to your .env file
+2. Set up Stripe webhook at: https://mockfactory.io/api/v1/payments/webhook
+3. Configure webhook events:
+   - checkout.session.completed
+   - customer.subscription.created
+   - customer.subscription.updated
+   - customer.subscription.deleted
+   - invoice.payment_succeeded
+   - invoice.payment_failed
+
+View in Stripe Dashboard:
+https://dashboard.stripe.com/test/products

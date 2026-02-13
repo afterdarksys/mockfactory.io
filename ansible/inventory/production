@@ -1,0 +1,21 @@
+[api_servers]
+mockfactory.io ansible_host=mockfactory.io ansible_user=opc
+
+[db_servers]
+mockfactory.io
+
+[cache_servers]
+mockfactory.io
+
+[web_servers]
+mockfactory.io
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+deployment_user=opc
+app_directory=/home/opc/mockfactory
+docker_compose_file=docker-compose.prod.yml
+
+# Environment
+environment=production
+domain=mockfactory.io

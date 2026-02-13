@@ -1,0 +1,17 @@
+[DEFAULT]
+user=ocid1.user.oc1..your_user_ocid_here
+fingerprint=your:fingerprint:here
+tenancy=ocid1.tenancy.oc1..your_tenancy_ocid_here
+region=us-ashburn-1
+key_file=/run/secrets/oci_key
+
+# This config file will be mounted as a Docker secret at /run/secrets/oci_config
+# The key file will be mounted at /run/secrets/oci_key
+# Both paths are referenced by OCI_CONFIG_FILE and OCI_KEY_FILE environment variables
+
+# To use this in production:
+# 1. Copy this file to secrets/oci_config (remove .example)
+# 2. Fill in your actual OCI credentials
+# 3. Place your private key at secrets/oci_key.pem
+# 4. Ensure key_file path matches: /run/secrets/oci_key
+# 5. Docker Compose will mount these as secrets automatically

@@ -1,0 +1,88 @@
+---
+# Example playbook: Create complete mock AWS stack using MockFactory API
+- name: Deploy Mock AWS Infrastructure
+  hosts: localhost
+  gather_facts: no
+  vars:
+    mockfactory_api_key: "{{ lookup('env', 'MOCKFACTORY_API_KEY') }}"
+    environment_id: "env-abc123"
+
+  tasks:
+    - name: Create VPC
+      mockfactory:
+        api_key: "{{ mockfactory_api_key }}"
+        resource_type: vpc
+        action: create
+        environment_id: "{{ environment_id }}"
+        params:
+          cidr_block: "10.0.0.0/16"
+          enable_dns_hostnames: true
+      register: vpc_result
+
+    - name: Display VPC details
+      debug:
+        var: vpc_result
+
+    - name: Create public subnet
+      mockfactory:
+        api_key: "{{ mockfactory_api_key }}"
+        resource_type: subnet
+        action: create
+        environment_id: "{{ environment_id }}"
+        params:
+          vpc_id: "{{ vpc_result.resource.VpcId }}"
+          cidr_block: "10.0.1.0/24"
+          availability_zone: "us-east-1a"
+      register: subnet_result
+
+    - name: Create DynamoDB table
+      mockfactory:
+        api_key: "{{ mockfactory_api_key }}"
+        resource_type: dynamodb
+        action: create
+        environment_id: "{{ environment_id }}"
+        params:
+          table_name: "users"
+          partition_key: "user_id"
+          partition_key_type: "S"
+          sort_key: "timestamp"
+          sort_key_type: "N"
+      register: dynamodb_result
+
+    - name: Create SQS queue
+      mockfactory:
+        api_key: "{{ mockfactory_api_key }}"
+        resource_type: sqs
+        action: create
+        environment_id: "{{ environment_id }}"
+        params:
+          queue_name: "background-jobs"
+          visibility_timeout: 30
+      register: sqs_result
+
+    - name: Create Lambda function
+      mockfactory:
+        api_key: "{{ mockfactory_api_key }}"
+        resource_type: lambda
+        action: create
+        environment_id: "{{ environment_id }}"
+        params:
+          function_name: "my-api-handler"
+          runtime: "python3.9"
+          memory_mb: 128
+          handler: "index.handler"
+          code_zip_base64: "{{ lookup('file', '../lambda/handler.zip') | b64encode }}"
+          environment_variables:
+            DYNAMODB_TABLE: "{{ dynamodb_result.resource.TableName }}"
+            SQS_QUEUE_URL: "{{ sqs_result.resource.QueueUrl }}"
+      register: lambda_result
+
+    - name: Summary
+      debug:
+        msg:
+          - "VPC ID: {{ vpc_result.resource.VpcId }}"
+          - "Subnet ID: {{ subnet_result.resource.SubnetId }}"
+          - "DynamoDB Table: {{ dynamodb_result.resource.TableName }}"
+          - "SQS Queue URL: {{ sqs_result.resource.QueueUrl }}"
+          - "Lambda Function ARN: {{ lambda_result.resource.FunctionArn }}"
+          - "Estimated cost: FREE (metadata only - charges apply when resources are used)"

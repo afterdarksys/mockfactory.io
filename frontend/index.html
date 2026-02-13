@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MockFactory.io - Cloud Emulation & Testing Platform</title>
+    <meta name="description" content="Test AWS, GCP, and Azure services without the cloud bills. Real infrastructure, pay-per-use credits, Terraform & Ansible support.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+
+    <!-- Navigation -->
+    <nav class="border-b border-gray-200 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        MockFactory.io
+                    </h1>
+                    <span class="ml-3 px-2 py-1 text-xs font-semibold bg-primary/10 text-primary rounded-full">
+                        Pay-Per-Use Cloud Testing
+                    </span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#features" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Features</a>
+                    <a href="#pricing" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Pricing</a>
+                    <a href="/docs" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">API Docs</a>
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
+                        <svg id="theme-icon-sun" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <svg id="theme-icon-moon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                    <a href="/app.html" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors inline-block">
+                        Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-5xl font-bold mb-6">
+                Test AWS, GCP & Azure<br>
+                <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    Without the Cloud Bills
+                </span>
+            </h2>
+            <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto">
+                Full cloud emulation with <strong>real infrastructure</strong>. Test VPCs, Lambda, DynamoDB, S3, and more.
+                Pay only for what you use. Works with your existing Terraform & Ansible code.
+            </p>
+            <div class="flex justify-center space-x-4">
+                <a href="/app.html" class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-lg font-semibold inline-block">
+                    Get $5 Free Credits
+                </a>
+                <a href="/docs" class="px-8 py-3 border-2 border-primary text-primary dark:text-primary rounded-lg hover:bg-primary/10 transition-colors text-lg font-semibold inline-block">
+                    View Examples
+                </a>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="mt-16 grid grid-cols-4 gap-8 max-w-4xl mx-auto">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary">70%</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">cheaper than AWS</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary">&lt;30s</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">to spin up</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary">Real</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">OCI infrastructure</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-primary">$0</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">when idle</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What We Emulate -->
+    <section id="features" class="py-20 px-4 bg-gray-50 dark:bg-gray-800/50">
+        <div class="max-w-7xl mx-auto">
+            <h3 class="text-3xl font-bold text-center mb-4">What We Emulate</h3>
+            <p class="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
+                Not just mocks - <strong>real infrastructure</strong> behind the scenes. AWS-compatible APIs backed by actual Oracle Cloud resources.
+            </p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- AWS VPC -->
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-primary dark:border-primary">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-bold">AWS VPC</h4>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Real OCI VCNs in isolated compartment. Subnets, security groups, route tables - the works.</p>
+                    <div class="text-sm text-primary font-semibold">FREE metadata · Pay for data transfer</div>
+                </div>
+
+                <!-- AWS Lambda -->
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-primary dark:border-primary">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-bold">AWS Lambda</h4>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Real Docker containers. Per-second billing just like AWS. Python, Node, Go, Java support.</p>
+                    <div class="text-sm text-primary font-semibold">$0.0000166667 per GB-second</div>
+                </div>
+
+                <!-- AWS DynamoDB -->
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-primary dark:border-primary">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"></path>
+                                <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"></path>
+                                <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-bold">AWS DynamoDB</h4>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">PostgreSQL JSONB backend. boto3 compatible. Supports scans, queries, indexes.</p>
+                    <div class="text-sm text-primary font-semibold">$0.00000025 per read request</div>
+                </div>
+
+                <!-- AWS SQS -->
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-bold">AWS SQS</h4>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Real Redis queues. FIFO & standard queues. Visibility timeout, dead letter queues.</p>
+                    <div class="text-sm text-primary font-semibold">$0.0000004 per request</div>
+                </div>
+
+                <!-- Cloud Storage -->
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd"></path>
+                                <path d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-bold">S3 / GCS / Azure</h4>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">OCI Object Storage backend. S3, Google Cloud Storage, Azure Blob APIs. All work identically.</p>
+                    <div class="text-sm text-primary font-semibold">$0.023 per GB-month</div>
+                </div>
+
+                <!-- PostgreSQL -->
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"></path>
+                                <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"></path>
+                                <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-bold">PostgreSQL</h4>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Standard, Supabase, pgvector, PostGIS. Pre-seeded with realistic test data.</p>
+                    <div class="text-sm text-primary font-semibold">$0.10 per hour</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Terraform & Ansible Support -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold mb-4">Works With Your Existing IaC</h3>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    Custom Terraform provider and Ansible modules. Test your infrastructure code before deploying to production.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Terraform -->
+                <div class="p-8 bg-gradient-to-br from-purple-500 to-purple-700 text-white rounded-lg">
+                    <h4 class="text-2xl font-bold mb-4">Terraform Provider</h4>
+                    <pre class="bg-black/30 p-4 rounded text-sm overflow-x-auto mb-4"><code>resource "mockfactory_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
+}
+
+resource "mockfactory_lambda_function" "api" {
+  function_name = "my-api"
+  runtime       = "python3.9"
+  memory_size   = 256
+}</code></pre>
+                    <p class="opacity-90">Same code works for real AWS - just swap the provider!</p>
+                </div>
+
+                <!-- Ansible -->
+                <div class="p-8 bg-gradient-to-br from-red-500 to-red-700 text-white rounded-lg">
+                    <h4 class="text-2xl font-bold mb-4">Ansible Module</h4>
+                    <pre class="bg-black/30 p-4 rounded text-sm overflow-x-auto mb-4"><code>- name: Create VPC
+  mockfactory:
+    resource_type: vpc
+    action: create
+    params:
+      cidr_block: "10.0.0.0/16"
+
+- name: Create Lambda
+  mockfactory:
+    resource_type: lambda
+    action: create
+    params:
+      function_name: "my-api"</code></pre>
+                    <p class="opacity-90">Manage mock infrastructure with familiar Ansible syntax</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Credit Pricing -->
+    <section id="pricing" class="py-20 px-4 bg-gray-50 dark:bg-gray-800/50">
+        <div class="max-w-7xl mx-auto">
+            <h3 class="text-3xl font-bold text-center mb-4">Simple Credit-Based Pricing</h3>
+            <p class="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
+                Prepay for credits. Pay only for what you actually use. No minimums, no monthly fees, no surprises.
+            </p>
+
+            <div class="grid md:grid-cols-4 gap-6 mb-12">
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700">
+                    <h4 class="text-xl font-bold mb-2">Starter</h4>
+                    <div class="text-3xl font-bold text-primary mb-4">$10</div>
+                    <div class="text-gray-600 dark:text-gray-400 mb-4">100 credits</div>
+                    <div class="text-sm text-gray-500">$0.10 per credit</div>
+                </div>
+
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700">
+                    <h4 class="text-xl font-bold mb-2">Developer</h4>
+                    <div class="text-3xl font-bold text-primary mb-4">$45</div>
+                    <div class="text-gray-600 dark:text-gray-400 mb-4">500 credits</div>
+                    <div class="text-sm text-green-600">10% discount · $0.09/credit</div>
+                </div>
+
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-primary dark:border-primary">
+                    <div class="text-xs font-semibold text-primary mb-2">MOST POPULAR</div>
+                    <h4 class="text-xl font-bold mb-2">Professional</h4>
+                    <div class="text-3xl font-bold text-primary mb-4">$160</div>
+                    <div class="text-gray-600 dark:text-gray-400 mb-4">2,000 credits</div>
+                    <div class="text-sm text-green-600">20% discount · $0.08/credit</div>
+                </div>
+
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700">
+                    <h4 class="text-xl font-bold mb-2">Enterprise</h4>
+                    <div class="text-3xl font-bold text-primary mb-4">$700</div>
+                    <div class="text-gray-600 dark:text-gray-400 mb-4">10,000 credits</div>
+                    <div class="text-sm text-green-600">30% discount · $0.07/credit</div>
+                </div>
+            </div>
+
+            <!-- Usage Examples -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-8 border-2 border-gray-200 dark:border-gray-700">
+                <h4 class="text-xl font-bold mb-6 text-center">What Can You Do With Credits?</h4>
+                <div class="grid md:grid-cols-3 gap-6 text-sm">
+                    <div>
+                        <div class="font-semibold mb-2">100 credits gets you:</div>
+                        <ul class="space-y-1 text-gray-600 dark:text-gray-400">
+                            <li>• 1M Lambda invocations</li>
+                            <li>• 400K DynamoDB reads</li>
+                            <li>• 10 hours PostgreSQL</li>
+                            <li>• 4GB cloud storage/month</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-2">500 credits gets you:</div>
+                        <ul class="space-y-1 text-gray-600 dark:text-gray-400">
+                            <li>• CI/CD testing for a month</li>
+                            <li>• Full dev environment (24/7)</li>
+                            <li>• 5M Lambda + DB combo</li>
+                            <li>• Integration test suite</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-2">2,000 credits gets you:</div>
+                        <ul class="space-y-1 text-gray-600 dark:text-gray-400">
+                            <li>• Team environments</li>
+                            <li>• Production-like workloads</li>
+                            <li>• 200+ hours compute time</li>
+                            <li>• Staging environment</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h3 class="text-3xl font-bold text-center mb-12">Perfect For</h3>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">CI/CD Testing</h4>
+                    <p class="text-gray-600 dark:text-gray-400">Test infrastructure changes in CI before deploying. No more "hope it works" pushes to production.</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">Learning & Training</h4>
+                    <p class="text-gray-600 dark:text-gray-400">Learn AWS, GCP, or Azure without racking up cloud bills. Perfect for bootcamps and self-study.</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">Development Environments</h4>
+                    <p class="text-gray-600 dark:text-gray-400">Spin up full dev environments in seconds. Tear them down when done. Pay only for usage.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-20 px-4 bg-gradient-to-r from-primary to-secondary text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h3 class="text-4xl font-bold mb-4">Start Testing Without Cloud Bills</h3>
+            <p class="text-xl mb-8 opacity-90">Get $5 in free credits. No credit card required. Cancel anytime.</p>
+            <a href="/app.html" class="px-8 py-3 bg-white text-primary rounded-lg hover:bg-gray-100 transition-colors text-lg font-semibold inline-block">
+                Get Started Free
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-gray-200 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h5 class="font-bold mb-4">Services</h5>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400">
+                        <li><a href="/docs#vpc" class="hover:text-primary">AWS VPC</a></li>
+                        <li><a href="/docs#lambda" class="hover:text-primary">AWS Lambda</a></li>
+                        <li><a href="/docs#dynamodb" class="hover:text-primary">DynamoDB</a></li>
+                        <li><a href="/docs#sqs" class="hover:text-primary">SQS</a></li>
+                        <li><a href="/docs#storage" class="hover:text-primary">Cloud Storage</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-4">Infrastructure</h5>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400">
+                        <li><a href="/docs#terraform" class="hover:text-primary">Terraform Provider</a></li>
+                        <li><a href="/docs#ansible" class="hover:text-primary">Ansible Module</a></li>
+                        <li><a href="/docs#api" class="hover:text-primary">REST API</a></li>
+                        <li><a href="/docs#sdk" class="hover:text-primary">Python SDK</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-4">Resources</h5>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400">
+                        <li><a href="/docs" class="hover:text-primary">Documentation</a></li>
+                        <li><a href="/docs#examples" class="hover:text-primary">Examples</a></li>
+                        <li><a href="https://github.com/mockfactory" class="hover:text-primary">GitHub</a></li>
+                        <li><a href="/docs#pricing" class="hover:text-primary">Pricing Calculator</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-4">Company</h5>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400">
+                        <li><a href="/about" class="hover:text-primary">About</a></li>
+                        <li><a href="mailto:support@mockfactory.io" class="hover:text-primary">Contact</a></li>
+                        <li><a href="/terms" class="hover:text-primary">Terms</a></li>
+                        <li><a href="/privacy" class="hover:text-primary">Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center text-gray-600 dark:text-gray-400 pt-8 border-t border-gray-200 dark:border-gray-700">
+                <p>&copy; 2026 MockFactory.io - Cloud Emulation & Testing Platform</p>
+                <p class="text-sm mt-2">Built on Oracle Cloud Infrastructure</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="static/js/theme.js"></script>
+</body>
+</html>
