@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Tools - MockFactory CLI & MockLib SDKs</title>
+    <meta name="description" content="Install MockFactory CLI and MockLib SDKs for Python, Node.js, Go, PHP, and Shell. Execute code and test cloud services from your terminal.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+
+    <!-- Navigation -->
+    <nav class="border-b border-gray-200 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/index.html" class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        MockFactory.io
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/index.html#features" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Features</a>
+                    <a href="/index.html#pricing" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Pricing</a>
+                    <a href="/tools.html" class="text-primary dark:text-primary font-semibold">Developer Tools</a>
+                    <a href="/app.html" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors inline-block">
+                        Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-12 px-4 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-4xl font-bold mb-4">Developer Tools</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                Command-line tools and SDKs to interact with MockFactory from your terminal and code
+            </p>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <!-- Quick Navigation -->
+        <div class="grid grid-cols-2 gap-6 mb-12">
+            <a href="#cli" class="block p-6 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-2 border-transparent hover:border-primary">
+                <h3 class="text-2xl font-bold mb-2">🚀 MockFactory CLI</h3>
+                <p class="text-gray-600 dark:text-gray-400">Execute code in secure sandboxes from your terminal</p>
+                <code class="block mt-3 text-sm bg-gray-900 dark:bg-black text-green-400 p-2 rounded">pip install mockfactory-cli</code>
+            </a>
+            <a href="#mocklib" class="block p-6 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-2 border-transparent hover:border-primary">
+                <h3 class="text-2xl font-bold mb-2">📚 MockLib SDKs</h3>
+                <p class="text-gray-600 dark:text-gray-400">Cloud emulation SDKs for Python, Node.js, Go, PHP & Shell</p>
+                <code class="block mt-3 text-sm bg-gray-900 dark:bg-black text-green-400 p-2 rounded">pip install mocklib</code>
+            </a>
+        </div>
+
+        <!-- MockFactory CLI Section -->
+        <div id="cli" class="mb-16">
+            <div class="border-l-4 border-primary pl-6 mb-8">
+                <h2 class="text-3xl font-bold mb-2">MockFactory CLI</h2>
+                <p class="text-gray-600 dark:text-gray-400">Secure code execution sandbox - Run Python, JavaScript, PHP, Perl, Go, Shell, and HTML code in isolated containers</p>
+            </div>
+
+            <!-- Installation -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold mb-4">Installation</h3>
+                <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg font-mono text-sm">
+                    <div class="mb-2"># Install from PyPI</div>
+                    <div class="text-white">pip install mockfactory-cli</div>
+                    <div class="mt-4 mb-2"># Verify installation</div>
+                    <div class="text-white">mockfactory --version</div>
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    <a href="https://pypi.org/project/mockfactory-cli/" target="_blank" class="text-primary hover:underline">→ View on PyPI</a>
+                    <a href="https://github.com/straticus1/mockfactory-cli" target="_blank" class="text-primary hover:underline">→ View on GitHub</a>
+                </div>
+            </div>
+
+            <!-- Quick Start -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold mb-4">Quick Start</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-semibold mb-2 text-primary">Execute code inline</h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg font-mono text-sm">
+                            <div class="text-white">mockfactory run python -c "print('Hello World')"</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2 text-primary">Execute a file</h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg font-mono text-sm">
+                            <div class="text-white">mockfactory execute script.py</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold mb-4">Features</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="text-lg font-semibold mb-2">🔒 Secure</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Isolated Docker containers</div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="text-lg font-semibold mb-2">🌐 Multi-Lang</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">7 languages supported</div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="text-lg font-semibold mb-2">🎨 Beautiful</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Rich terminal output</div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="text-lg font-semibold mb-2">👤 Auth</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Login & track usage</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supported Languages -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold mb-4">Supported Languages</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead>
+                            <tr class="bg-gray-50 dark:bg-gray-800">
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Language</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Extension</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Example</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr><td class="px-6 py-4">Python</td><td class="px-6 py-4">.py</td><td class="px-6 py-4 font-mono text-sm">mockfactory execute script.py</td></tr>
+                            <tr class="bg-gray-50 dark:bg-gray-800"><td class="px-6 py-4">JavaScript</td><td class="px-6 py-4">.js</td><td class="px-6 py-4 font-mono text-sm">mockfactory execute app.js</td></tr>
+                            <tr><td class="px-6 py-4">PHP</td><td class="px-6 py-4">.php</td><td class="px-6 py-4 font-mono text-sm">mockfactory execute script.php</td></tr>
+                            <tr class="bg-gray-50 dark:bg-gray-800"><td class="px-6 py-4">Perl</td><td class="px-6 py-4">.pl</td><td class="px-6 py-4 font-mono text-sm">mockfactory execute script.pl</td></tr>
+                            <tr><td class="px-6 py-4">Go</td><td class="px-6 py-4">.go</td><td class="px-6 py-4 font-mono text-sm">mockfactory execute program.go</td></tr>
+                            <tr class="bg-gray-50 dark:bg-gray-800"><td class="px-6 py-4">Shell</td><td class="px-6 py-4">.sh</td><td class="px-6 py-4 font-mono text-sm">mockfactory execute script.sh</td></tr>
+                            <tr><td class="px-6 py-4">HTML</td><td class="px-6 py-4">.html</td><td class="px-6 py-4 font-mono text-sm">mockfactory execute page.html</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Commands -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold mb-4">Available Commands</h3>
+                <div class="space-y-3">
+                    <div class="border-l-4 border-primary pl-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-r-lg">
+                        <code class="text-primary font-semibold">mockfactory login</code>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Sign in to your account</p>
+                    </div>
+                    <div class="border-l-4 border-primary pl-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-r-lg">
+                        <code class="text-primary font-semibold">mockfactory signup</code>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Create a new account (10 free runs/day)</p>
+                    </div>
+                    <div class="border-l-4 border-primary pl-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-r-lg">
+                        <code class="text-primary font-semibold">mockfactory status</code>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Show authentication status and usage</p>
+                    </div>
+                    <div class="border-l-4 border-primary pl-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-r-lg">
+                        <code class="text-primary font-semibold">mockfactory usage</code>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">View current usage statistics</p>
+                    </div>
+                    <div class="border-l-4 border-primary pl-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-r-lg">
+                        <code class="text-primary font-semibold">mockfactory run &lt;language&gt; -c "&lt;code&gt;"</code>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Execute code inline</p>
+                    </div>
+                    <div class="border-l-4 border-primary pl-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-r-lg">
+                        <code class="text-primary font-semibold">mockfactory execute &lt;file&gt;</code>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Execute a file (auto-detect language)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Short Alias -->
+            <div class="bg-primary/10 border-l-4 border-primary p-6 rounded-r-lg">
+                <h4 class="font-semibold mb-2">💡 Pro Tip: Use the short alias</h4>
+                <p class="text-gray-600 dark:text-gray-400 mb-2">Save keystrokes with <code class="bg-gray-900 dark:bg-black text-green-400 px-2 py-1 rounded">mf</code>:</p>
+                <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-sm">
+                    <div class="text-white">mf run python -c "print('Shorter!')"</div>
+                    <div class="text-white mt-2">mf execute script.py</div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-16 border-gray-200 dark:border-gray-800">
+
+        <!-- MockLib SDKs Section -->
+        <div id="mocklib">
+            <div class="border-l-4 border-secondary pl-6 mb-8">
+                <h2 class="text-3xl font-bold mb-2">MockLib - Cloud Emulation SDKs</h2>
+                <p class="text-gray-600 dark:text-gray-400">Multi-language SDKs for testing AWS, GCP, and Azure services. Test VPCs, Lambda, DynamoDB, S3, and more without cloud bills.</p>
+            </div>
+
+            <!-- SDK Languages -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold mb-4">Installation</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Python -->
+                    <div class="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
+                        <h4 class="text-lg font-semibold mb-2 flex items-center">
+                            <span class="text-2xl mr-2">🐍</span> Python
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-sm mb-2">
+                            <div class="text-white">pip install mocklib</div>
+                        </div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">Python 3.8+</div>
+                    </div>
+
+                    <!-- Node.js -->
+                    <div class="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
+                        <h4 class="text-lg font-semibold mb-2 flex items-center">
+                            <span class="text-2xl mr-2">📦</span> Node.js
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-sm mb-2">
+                            <div class="text-white">npm install @mockfactory/mocklib</div>
+                        </div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">Node.js 14+</div>
+                    </div>
+
+                    <!-- Go -->
+                    <div class="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
+                        <h4 class="text-lg font-semibold mb-2 flex items-center">
+                            <span class="text-2xl mr-2">🔷</span> Go
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-sm mb-2">
+                            <div class="text-white">go get github.com/mockfactory/mocklib</div>
+                        </div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">Go 1.18+</div>
+                    </div>
+
+                    <!-- PHP -->
+                    <div class="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
+                        <h4 class="text-lg font-semibold mb-2 flex items-center">
+                            <span class="text-2xl mr-2">🐘</span> PHP
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-sm mb-2">
+                            <div class="text-white">composer require mockfactory/mocklib</div>
+                        </div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">PHP 8.0+</div>
+                    </div>
+
+                    <!-- Shell -->
+                    <div class="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-primary transition-colors">
+                        <h4 class="text-lg font-semibold mb-2 flex items-center">
+                            <span class="text-2xl mr-2">🖥️</span> Shell
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-sm mb-2">
+                            <div class="text-white">source mocklib.sh</div>
+                        </div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">Bash + curl + jq</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Examples -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold mb-4">Quick Examples</h3>
+
+                <!-- Python Example -->
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-2 text-primary">Python</h4>
+                    <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre class="text-sm"><span class="text-blue-400">from</span> mocklib <span class="text-blue-400">import</span> MockFactory
+
+mf = MockFactory(api_key=<span class="text-yellow-400">"mf_..."</span>)
+
+<span class="text-gray-500"># Create VPC</span>
+vpc = mf.vpc.create(cidr_block=<span class="text-yellow-400">"10.0.0.0/16"</span>)
+<span class="text-blue-400">print</span>(<span class="text-yellow-400">f"Created VPC: {vpc.id}"</span>)
+
+<span class="text-gray-500"># Create Lambda function</span>
+lambda_fn = mf.lambda_function.create(
+    function_name=<span class="text-yellow-400">"my-api"</span>,
+    runtime=<span class="text-yellow-400">"python3.9"</span>,
+    memory_mb=<span class="text-yellow-400">256</span>
+)</pre>
+                    </div>
+                </div>
+
+                <!-- Node.js Example -->
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-2 text-primary">Node.js / TypeScript</h4>
+                    <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre class="text-sm"><span class="text-blue-400">import</span> MockFactory <span class="text-blue-400">from</span> <span class="text-yellow-400">'@mockfactory/mocklib'</span>;
+
+<span class="text-blue-400">const</span> mf = <span class="text-blue-400">new</span> MockFactory({ apiKey: <span class="text-yellow-400">'mf_...'</span> });
+
+<span class="text-gray-500">// Create VPC</span>
+<span class="text-blue-400">const</span> vpc = <span class="text-blue-400">await</span> mf.vpc.create({ cidrBlock: <span class="text-yellow-400">'10.0.0.0/16'</span> });
+console.log(<span class="text-yellow-400">`Created VPC: ${vpc.id}`</span>);
+
+<span class="text-gray-500">// Create DynamoDB table</span>
+<span class="text-blue-400">const</span> table = <span class="text-blue-400">await</span> mf.dynamodb.createTable({
+  tableName: <span class="text-yellow-400">'users'</span>,
+  partitionKey: <span class="text-yellow-400">'user_id'</span>
+});</pre>
+                    </div>
+                </div>
+
+                <!-- Shell Example -->
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-2 text-primary">Shell</h4>
+                    <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre class="text-sm"><span class="text-blue-400">export</span> MOCKFACTORY_API_KEY=<span class="text-yellow-400">"mf_..."</span>
+<span class="text-blue-400">source</span> mocklib.sh
+
+<span class="text-gray-500"># Create VPC</span>
+VPC_ID=$(mocklib_vpc_create <span class="text-yellow-400">"10.0.0.0/16"</span>)
+<span class="text-blue-400">echo</span> <span class="text-yellow-400">"Created VPC: $VPC_ID"</span>
+
+<span class="text-gray-500"># Create Lambda function</span>
+mocklib_lambda_create <span class="text-yellow-400">"my-func"</span> <span class="text-yellow-400">"python3.9"</span> <span class="text-yellow-400">256</span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supported Services -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold mb-4">Supported Cloud Services</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="font-semibold mb-1">🌐 VPC</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">Virtual Private Cloud</div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="font-semibold mb-1">⚡ Lambda</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">Serverless Functions</div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="font-semibold mb-1">💾 DynamoDB</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">NoSQL Database</div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="font-semibold mb-1">📦 S3 Storage</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">Object Storage</div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="font-semibold mb-1">📬 SQS</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">Message Queuing</div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="font-semibold mb-1">🔧 More Coming</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">RDS, EC2, SNS...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Use Cases -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold mb-4">Use Cases</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="border-l-4 border-secondary pl-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-r-lg">
+                        <h4 class="font-semibold mb-2">🧪 Integration Testing</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Test your app against real cloud services without AWS credentials or bills</p>
+                    </div>
+                    <div class="border-l-4 border-secondary pl-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-r-lg">
+                        <h4 class="font-semibold mb-2">🔄 CI/CD Pipelines</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Run integration tests in GitHub Actions, GitLab CI, or Jenkins</p>
+                    </div>
+                    <div class="border-l-4 border-secondary pl-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-r-lg">
+                        <h4 class="font-semibold mb-2">💻 Local Development</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Develop and test locally without cloud infrastructure</p>
+                    </div>
+                    <div class="border-l-4 border-secondary pl-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-r-lg">
+                        <h4 class="font-semibold mb-2">🎓 Learning & Tutorials</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Learn cloud services without needing AWS/GCP/Azure accounts</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Key Setup -->
+            <div class="bg-secondary/10 border-l-4 border-secondary p-6 rounded-r-lg">
+                <h4 class="font-semibold mb-2">🔑 Get Your API Key</h4>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    Both the CLI and MockLib SDKs require a MockFactory API key:
+                </p>
+                <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-400">
+                    <li>Sign up at <a href="/app.html" class="text-primary hover:underline">mockfactory.io/app</a></li>
+                    <li>Get $5 free credits to start</li>
+                    <li>Generate an API key from your dashboard</li>
+                    <li>Use it in your code: <code class="bg-gray-900 dark:bg-black text-green-400 px-2 py-1 rounded">MockFactory(api_key="mf_...")</code></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Getting Started CTA -->
+        <div class="mt-16 text-center bg-gradient-to-r from-primary to-secondary text-white p-12 rounded-lg">
+            <h2 class="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+            <p class="text-xl mb-6 opacity-90">Sign up now and get $5 in free credits</p>
+            <a href="/app.html" class="inline-block px-8 py-3 bg-white text-primary rounded-lg hover:bg-gray-100 transition-colors text-lg font-semibold">
+                Get Started Free
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 dark:border-gray-800 mt-20 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600 dark:text-gray-400">
+            <p>&copy; 2025 MockFactory.io - After Dark Systems. All rights reserved.</p>
+            <div class="mt-4 space-x-4">
+                <a href="https://github.com/straticus1/mockfactory-cli" target="_blank" class="hover:text-primary">CLI GitHub</a>
+                <a href="https://pypi.org/project/mockfactory-cli/" target="_blank" class="hover:text-primary">PyPI</a>
+                <a href="/index.html#pricing" class="hover:text-primary">Pricing</a>
+                <a href="mailto:support@afterdarksystems.com" class="hover:text-primary">Support</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
