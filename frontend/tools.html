@@ -190,6 +190,290 @@
                 </div>
             </div>
 
+            <!-- Mock Resource Management (NEW in v0.2.0) -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold mb-4">
+                    Mock Resource Management
+                    <span class="text-sm bg-primary text-white px-2 py-1 rounded ml-2">NEW in v0.2.0</span>
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    Create complete organizational hierarchies with organizations, domains, clouds, and projects. Manage mock users, groups, containers, networks, and profiles within this enterprise-grade structure for comprehensive testing.
+                </p>
+
+                <!-- Hierarchical Structure Diagram -->
+                <div class="bg-gradient-to-r from-primary/10 to-secondary/10 p-6 rounded-lg mb-6 border border-primary/20">
+                    <h4 class="font-semibold mb-3 text-center">Hierarchical Organization Structure</h4>
+                    <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded font-mono text-xs">
+                        <div class="text-white">Organization (acme-corp)</div>
+                        <div class="text-white ml-4">├── Domains (example.com, acme.io)</div>
+                        <div class="text-white ml-4">├── Cloud Environments (dev-cloud, prod-cloud)</div>
+                        <div class="text-white ml-8">│   ├── Users</div>
+                        <div class="text-white ml-8">│   ├── Containers</div>
+                        <div class="text-white ml-8">│   └── Networks</div>
+                        <div class="text-white ml-4">└── Projects (UUID-based)</div>
+                        <div class="text-white ml-8">└── Grouped Resources</div>
+                    </div>
+                </div>
+
+                <!-- Hierarchical Resources -->
+                <h4 class="font-semibold mb-3 mt-6">Organizational Hierarchy</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="border-2 border-primary/30 rounded-lg p-3">
+                        <h5 class="font-semibold mb-2 text-primary flex items-center text-sm">
+                            <span class="text-lg mr-2">🏢</span> Organizations
+                        </h5>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-2 rounded font-mono text-xs">
+                            <div class="text-white">mockfactory organization create acme-corp</div>
+                        </div>
+                    </div>
+                    <div class="border-2 border-primary/30 rounded-lg p-3">
+                        <h5 class="font-semibold mb-2 text-primary flex items-center text-sm">
+                            <span class="text-lg mr-2">🌍</span> Domains
+                        </h5>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-2 rounded font-mono text-xs">
+                            <div class="text-white">mockfactory domain create example.com</div>
+                        </div>
+                    </div>
+                    <div class="border-2 border-primary/30 rounded-lg p-3">
+                        <h5 class="font-semibold mb-2 text-primary flex items-center text-sm">
+                            <span class="text-lg mr-2">☁️</span> Clouds
+                        </h5>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-2 rounded font-mono text-xs">
+                            <div class="text-white">mockfactory cloud create dev --provider aws</div>
+                        </div>
+                    </div>
+                    <div class="border-2 border-primary/30 rounded-lg p-3">
+                        <h5 class="font-semibold mb-2 text-primary flex items-center text-sm">
+                            <span class="text-lg mr-2">📁</span> Projects
+                        </h5>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-2 rounded font-mono text-xs">
+                            <div class="text-white">mockfactory project create web-app</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="font-semibold mb-3 mt-6">Mock Resources</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Mock Users -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">👥</span> Mock Users
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory user create john.doe \</div>
+                            <div class="text-white">  --organization acme-corp \</div>
+                            <div class="text-white">  --cloud dev-cloud</div>
+                            <div class="text-white mt-2">mockfactory user list</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Within orgs, clouds, domains</p>
+                    </div>
+
+                    <!-- Mock Groups -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">👨‍👩‍👧‍👦</span> Mock Groups
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory group create developers</div>
+                            <div class="text-white mt-2">mockfactory group add-user \</div>
+                            <div class="text-white">  developers john.doe</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Organize users into groups</p>
+                    </div>
+
+                    <!-- Mock Containers -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">📦</span> Mock Containers
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory container create web-app \</div>
+                            <div class="text-white">  --image nginx \</div>
+                            <div class="text-white">  --user john.doe</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Bind users to containers</p>
+                    </div>
+
+                    <!-- Mock Networks -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">🌐</span> Mock Networks
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory network create frontend \</div>
+                            <div class="text-white">  --cidr 10.1.0.0/24 \</div>
+                            <div class="text-white">  --isolated</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Test network isolation</p>
+                    </div>
+
+                    <!-- Mock Mail Servers -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">📧</span> Mock Mail Servers
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory mail-server create smtp \</div>
+                            <div class="text-white">  --protocol smtp \</div>
+                            <div class="text-white">  --port 587 --tls</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">SMTP, IMAP, POP3 support</p>
+                    </div>
+
+                    <!-- Mock Mailboxes -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">📬</span> Mock Mailboxes
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory mailbox create \</div>
+                            <div class="text-white">  john@example.com \</div>
+                            <div class="text-white">  --user john.doe</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">With inbox, sent, drafts folders</p>
+                    </div>
+
+                    <!-- Mock SMS -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">💬</span> Mock SMS
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory sms send \</div>
+                            <div class="text-white">  +1234567890 +0987654321 \</div>
+                            <div class="text-white">  --message "Code: 123456"</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Test 2FA and SMS notifications</p>
+                    </div>
+
+                    <!-- Mock APIs -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">🔌</span> Mock APIs
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory api create user-api \</div>
+                            <div class="text-white">  --type rest --auth bearer</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">REST, GraphQL, Webhooks</p>
+                    </div>
+
+                    <!-- User Workflows -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">🔄</span> Workflows
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory workflow \</div>
+                            <div class="text-white">  create-registration signup \</div>
+                            <div class="text-white">  --email-verification</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Test registration flows</p>
+                    </div>
+
+                    <!-- IAM (Identity and Access Management) -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">🔐</span> IAM
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory iam create-user john \</div>
+                            <div class="text-white">  --organization acme-corp</div>
+                            <div class="text-white mt-2">mockfactory iam create-policy \</div>
+                            <div class="text-white">  s3-read --file policy.json</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Users, groups, roles, policies</p>
+                    </div>
+
+                    <!-- Data Generators -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">🎲</span> Data Generators
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory generate users \</div>
+                            <div class="text-white">  --count 100 --role mixed</div>
+                            <div class="text-white mt-2">mockfactory generate test-scenario \</div>
+                            <div class="text-white">  enterprise</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Realistic test data generation</p>
+                    </div>
+
+                    <!-- Utility Helpers -->
+                    <div class="border-2 border-primary/30 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3 text-primary flex items-center">
+                            <span class="text-xl mr-2">🛠️</span> Utility Helpers
+                        </h4>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-xs space-y-1">
+                            <div class="text-white">mockfactory utilities ip2bin \</div>
+                            <div class="text-white">  192.168.1.1</div>
+                            <div class="text-white mt-2">mockfactory utilities uuid \</div>
+                            <div class="text-white">  --count 5</div>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">60+ conversion & transform tools</p>
+                    </div>
+                </div>
+
+                <!-- Use Cases -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                    <h4 class="font-semibold mb-3">Use Cases</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">Multi-tenant application testing</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">Access control & permission testing</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">Network isolation testing</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">Container orchestration scenarios</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">Email workflow & notification testing</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">IAM policy & permission testing</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">Machine-generated test data at scale</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">Data transformation & conversion utilities</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">Multi-user email communication scenarios</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">SMS verification & 2FA testing</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">Complete user registration workflows</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">API integration & webhook testing</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-primary mr-2">✓</span>
+                            <span class="text-gray-600 dark:text-gray-400">GraphQL & REST API mocking</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Short Alias -->
             <div class="bg-primary/10 border-l-4 border-primary p-6 rounded-r-lg">
                 <h4 class="font-semibold mb-2">💡 Pro Tip: Use the short alias</h4>
@@ -277,7 +561,7 @@
 
                 <!-- Python Example -->
                 <div class="mb-6">
-                    <h4 class="font-semibold mb-2 text-primary">Python</h4>
+                    <h4 class="font-semibold mb-2 text-primary">Python - Cloud Resources</h4>
                     <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
 <pre class="text-sm"><span class="text-blue-400">from</span> mocklib <span class="text-blue-400">import</span> MockFactory
 
@@ -293,6 +577,32 @@ lambda_fn = mf.lambda_function.create(
     runtime=<span class="text-yellow-400">"python3.9"</span>,
     memory_mb=<span class="text-yellow-400">256</span>
 )</pre>
+                    </div>
+                </div>
+
+                <!-- Python IAM & Generators Example -->
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-2 text-primary">Python - IAM, Generators & Utilities</h4>
+                    <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre class="text-sm"><span class="text-gray-500"># Create IAM user & policy</span>
+user = mf.iam.create_user(
+    username=<span class="text-yellow-400">"john.smith"</span>,
+    organization=<span class="text-yellow-400">"acme-corp"</span>
+)
+policy = mf.iam.create_policy(
+    policy_name=<span class="text-yellow-400">"s3-read-only"</span>,
+    policy_document={<span class="text-yellow-400">"Version"</span>: <span class="text-yellow-400">"2012-10-17"</span>, ...}
+)
+mf.iam.attach_user_policy(<span class="text-yellow-400">"john.smith"</span>, <span class="text-yellow-400">"s3-read-only"</span>)
+
+<span class="text-gray-500"># Generate test data</span>
+users = mf.generator.generate_users(count=<span class="text-yellow-400">100</span>, role=<span class="text-yellow-400">"mixed"</span>)
+network = mf.generator.generate_network_config(cidr=<span class="text-yellow-400">"10.0.0.0/16"</span>)
+
+<span class="text-gray-500"># Use utility helpers</span>
+binary = mf.utilities.ip2bin(<span class="text-yellow-400">"192.168.1.1"</span>)
+uuid = mf.utilities.generate_uuid()
+hash_val = mf.utilities.sha256(<span class="text-yellow-400">"data"</span>)</pre>
                     </div>
                 </div>
 
@@ -356,6 +666,18 @@ mocklib_lambda_create <span class="text-yellow-400">"my-func"</span> <span class
                     <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                         <div class="font-semibold mb-1">📬 SQS</div>
                         <div class="text-xs text-gray-600 dark:text-gray-400">Message Queuing</div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="font-semibold mb-1">🔐 IAM</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">Identity & Access Management</div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="font-semibold mb-1">🎲 Generators</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">Test Data Generation</div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="font-semibold mb-1">🛠️ Utilities</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">60+ Helper Functions</div>
                     </div>
                     <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                         <div class="font-semibold mb-1">🔧 More Coming</div>
