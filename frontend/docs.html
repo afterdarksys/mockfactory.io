@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - MockFactory Developer Tools</title>
+    <meta name="description" content="Complete documentation for MockFactory CLI and MockLib SDKs - Cloud emulation, IAM, data generators, and utility helpers">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <style>
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .doc-section {
+            scroll-margin-top: 80px;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+
+    <!-- Navigation -->
+    <nav class="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 sticky-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/index.html" class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        MockFactory.io
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/index.html#features" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Features</a>
+                    <a href="/index.html#pricing" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Pricing</a>
+                    <a href="/tools.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Developer Tools</a>
+                    <a href="/docs.html" class="text-primary dark:text-primary font-semibold">Documentation</a>
+                    <a href="/app.html" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors inline-block">
+                        Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex gap-8">
+
+            <!-- Sidebar Navigation -->
+            <aside class="w-64 flex-shrink-0">
+                <div class="sticky top-20 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                    <h3 class="font-bold mb-4 text-lg">Documentation</h3>
+                    <nav class="space-y-1">
+                        <a href="#getting-started" class="block py-2 px-3 rounded hover:bg-primary/10 text-sm font-semibold">Getting Started</a>
+                        <a href="#api-key" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">API Key Setup</a>
+
+                        <a href="#cli" class="block py-2 px-3 rounded hover:bg-primary/10 text-sm mt-2 font-semibold">MockFactory CLI</a>
+                        <a href="#cli-install" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Installation</a>
+                        <a href="#cli-code-exec" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Code Execution</a>
+                        <a href="#cli-organizations" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Organizations</a>
+                        <a href="#cli-users" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Users & Groups</a>
+                        <a href="#cli-containers" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Containers</a>
+                        <a href="#cli-mail" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Email & SMS</a>
+
+                        <a href="#mocklib" class="block py-2 px-3 rounded hover:bg-primary/10 text-sm mt-2 font-semibold">MockLib SDK</a>
+                        <a href="#mocklib-install" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Installation</a>
+                        <a href="#mocklib-resources" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Cloud Resources</a>
+                        <a href="#mocklib-hierarchy" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Hierarchy</a>
+
+                        <a href="#iam" class="block py-2 px-3 rounded hover:bg-primary/10 text-sm mt-2 font-semibold">IAM</a>
+                        <a href="#iam-users" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Users & Groups</a>
+                        <a href="#iam-policies" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Policies & Roles</a>
+                        <a href="#iam-permissions" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Permissions</a>
+                        <a href="#iam-access-keys" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Access Keys</a>
+
+                        <a href="#generators" class="block py-2 px-3 rounded hover:bg-primary/10 text-sm mt-2 font-semibold">Data Generators</a>
+                        <a href="#gen-users" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Users & Employees</a>
+                        <a href="#gen-orgs" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Organizations</a>
+                        <a href="#gen-network" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Network Configs</a>
+                        <a href="#gen-iam-policies" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">IAM Policies</a>
+                        <a href="#gen-scenarios" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Test Scenarios</a>
+
+                        <a href="#utilities" class="block py-2 px-3 rounded hover:bg-primary/10 text-sm mt-2 font-semibold">Utility Helpers</a>
+                        <a href="#util-binary" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Binary/Hex</a>
+                        <a href="#util-ip" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">IP & CIDR</a>
+                        <a href="#util-ipv6" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">IPv6</a>
+                        <a href="#util-encoding" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Encoding</a>
+                        <a href="#util-hash" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Hashing</a>
+                        <a href="#util-uuid" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">UUIDs</a>
+                        <a href="#util-time" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Time</a>
+                        <a href="#util-strings" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Strings</a>
+                        <a href="#util-json" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">JSON/YAML</a>
+                        <a href="#util-arn" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">AWS ARNs</a>
+                        <a href="#util-url" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">URLs</a>
+
+                        <a href="#api-reference" class="block py-2 px-3 rounded hover:bg-primary/10 text-sm mt-2 font-semibold">API Reference</a>
+                        <a href="#api-authentication" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Authentication</a>
+                        <a href="#api-rate-limits" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Rate Limits</a>
+                        <a href="#api-errors" class="block py-1 px-3 pl-6 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">Error Handling</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1">
+
+                <!-- Getting Started -->
+                <section id="getting-started" class="doc-section mb-12">
+                    <h2 class="text-3xl font-bold mb-4 border-b-2 border-primary pb-2">Getting Started</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        MockFactory provides cloud emulation, code execution sandboxes, and mock infrastructure for testing. Get started in minutes.
+                    </p>
+
+                    <div id="api-key" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">1. Get Your API Key</h3>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-4">
+                            <ol class="space-y-2">
+                                <li>1. Sign up at <a href="/app.html" class="text-primary hover:underline">mockfactory.io/app</a></li>
+                                <li>2. Get <strong>$5 free credits</strong> automatically</li>
+                                <li>3. Generate an API key from your dashboard</li>
+                                <li>4. Copy your API key (starts with <code class="bg-gray-900 dark:bg-black text-green-400 px-2 py-1 rounded">mf_</code>)</li>
+                            </ol>
+                        </div>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg font-mono text-sm">
+                            <div class="text-gray-500"># Set as environment variable</div>
+                            <div class="text-white">export MOCKFACTORY_API_KEY="mf_your_key_here"</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MockFactory CLI -->
+                <section id="cli" class="doc-section mb-12">
+                    <h2 class="text-3xl font-bold mb-4 border-b-2 border-primary pb-2">MockFactory CLI</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        Secure code execution sandbox and mock resource management from your terminal.
+                    </p>
+
+                    <div id="cli-install" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Installation</h3>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg font-mono text-sm mb-4">
+                            <div class="text-white">pip install mockfactory-cli</div>
+                        </div>
+                        <a href="https://pypi.org/project/mockfactory-cli/" target="_blank" class="text-primary hover:underline">→ View on PyPI</a>
+                    </div>
+
+                    <div id="cli-usage" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Basic Usage</h3>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg font-mono text-sm space-y-2">
+                            <div class="text-gray-500"># Execute Python code</div>
+                            <div class="text-white">mockfactory run python -c "print('Hello World')"</div>
+                            <div class="text-gray-500 mt-3"># Create mock user</div>
+                            <div class="text-white">mockfactory user create john.doe --email john@example.com</div>
+                            <div class="text-gray-500 mt-3"># Create organization</div>
+                            <div class="text-white">mockfactory organization create acme-corp --plan pro</div>
+                        </div>
+                    </div>
+
+                    <div id="cli-code-exec" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Code Execution</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-3">Execute code in secure, isolated containers</p>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg font-mono text-sm space-y-2">
+                            <div class="text-gray-500"># Execute inline code</div>
+                            <div class="text-white">mockfactory run python -c "import sys; print(sys.version)"</div>
+                            <div class="text-white">mockfactory run javascript -c "console.log('Hello')"</div>
+                            <div class="text-white">mockfactory run php -c "echo phpversion();"</div>
+
+                            <div class="text-gray-500 mt-3"># Execute from file</div>
+                            <div class="text-white">mockfactory execute script.py</div>
+                            <div class="text-white">mockfactory execute app.js</div>
+
+                            <div class="text-gray-500 mt-3"># With custom timeout</div>
+                            <div class="text-white">mockfactory execute long_task.py --timeout 120</div>
+                        </div>
+                    </div>
+
+                    <div id="cli-organizations" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Organizations & Hierarchy</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-3">Create organizational structures with domains, clouds, and projects</p>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg font-mono text-sm space-y-2">
+                            <div class="text-gray-500"># Create organization</div>
+                            <div class="text-white">mockfactory organization create acme-corp \</div>
+                            <div class="text-white">  --description "Acme Corporation" \</div>
+                            <div class="text-white">  --plan pro</div>
+
+                            <div class="text-gray-500 mt-3"># Create domain</div>
+                            <div class="text-white">mockfactory domain create example.com \</div>
+                            <div class="text-white">  --organization acme-corp \</div>
+                            <div class="text-white">  --verified</div>
+
+                            <div class="text-gray-500 mt-3"># Create cloud environment</div>
+                            <div class="text-white">mockfactory cloud create dev-cloud \</div>
+                            <div class="text-white">  --provider aws \</div>
+                            <div class="text-white">  --organization acme-corp \</div>
+                            <div class="text-white">  --region us-east-1</div>
+
+                            <div class="text-gray-500 mt-3"># Create project</div>
+                            <div class="text-white">mockfactory project create web-app \</div>
+                            <div class="text-white">  --organization acme-corp \</div>
+                            <div class="text-white">  --environment production</div>
+                        </div>
+                    </div>
+
+                    <div id="cli-users" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Users & Groups</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-3">Manage mock users and groups for testing</p>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg font-mono text-sm space-y-2">
+                            <div class="text-gray-500"># Create user</div>
+                            <div class="text-white">mockfactory user create john.doe \</div>
+                            <div class="text-white">  --email john@example.com \</div>
+                            <div class="text-white">  --full-name "John Doe" \</div>
+                            <div class="text-white">  --role developer \</div>
+                            <div class="text-white">  --organization acme-corp \</div>
+                            <div class="text-white">  --cloud dev-cloud</div>
+
+                            <div class="text-gray-500 mt-3"># Create group</div>
+                            <div class="text-white">mockfactory group create developers \</div>
+                            <div class="text-white">  --description "Development team"</div>
+
+                            <div class="text-gray-500 mt-3"># Add user to group</div>
+                            <div class="text-white">mockfactory group add-user developers john.doe</div>
+
+                            <div class="text-gray-500 mt-3"># List users</div>
+                            <div class="text-white">mockfactory user list --role admin</div>
+                            <div class="text-white">mockfactory user list --organization acme-corp</div>
+                        </div>
+                    </div>
+
+                    <div id="cli-containers" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Containers & Networks</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-3">Create mock containers and networks for testing</p>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg font-mono text-sm space-y-2">
+                            <div class="text-gray-500"># Create container</div>
+                            <div class="text-white">mockfactory container create web-app \</div>
+                            <div class="text-white">  --image nginx \</div>
+                            <div class="text-white">  --user john.doe \</div>
+                            <div class="text-white">  --network frontend</div>
+
+                            <div class="text-gray-500 mt-3"># Create network</div>
+                            <div class="text-white">mockfactory network create frontend \</div>
+                            <div class="text-white">  --cidr 10.1.0.0/24 \</div>
+                            <div class="text-white">  --isolated</div>
+
+                            <div class="text-gray-500 mt-3"># Bind user to container</div>
+                            <div class="text-white">mockfactory container bind-user web-app alice</div>
+                        </div>
+                    </div>
+
+                    <div id="cli-mail" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Email & SMS</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-3">Test email and SMS workflows</p>
+                        <div class="bg-gray-900 dark:bg-black text-green-400 p-4 rounded-lg font-mono text-sm space-y-2">
+                            <div class="text-gray-500"># Create mail server</div>
+                            <div class="text-white">mockfactory mail-server create smtp \</div>
+                            <div class="text-white">  --protocol smtp \</div>
+                            <div class="text-white">  --port 587 --tls</div>
+
+                            <div class="text-gray-500 mt-3"># Create mailbox</div>
+                            <div class="text-white">mockfactory mailbox create john@example.com \</div>
+                            <div class="text-white">  --user john.doe</div>
+
+                            <div class="text-gray-500 mt-3"># Send SMS</div>
+                            <div class="text-white">mockfactory sms send +1234567890 +0987654321 \</div>
+                            <div class="text-white">  --message "Code: 123456"</div>
+
+                            <div class="text-gray-500 mt-3"># List messages</div>
+                            <div class="text-white">mockfactory sms list-messages --phone-number +1234567890</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MockLib SDK -->
+                <section id="mocklib" class="doc-section mb-12">
+                    <h2 class="text-3xl font-bold mb-4 border-b-2 border-primary pb-2">MockLib SDK</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        Cloud emulation SDKs for Python, Node.js, Go, PHP, and Shell.
+                    </p>
+
+                    <div id="mocklib-install" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Installation</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <h4 class="font-semibold mb-2">Python</h4>
+                                <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-sm">
+                                    <div class="text-white">pip install mocklib</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2">Node.js</h4>
+                                <div class="bg-gray-900 dark:bg-black text-green-400 p-3 rounded font-mono text-sm">
+                                    <div class="text-white">npm install @mockfactory/mocklib</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="mocklib-resources" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Cloud Resources</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-4">
+<pre># VPC
+vpc = mf.vpc.create(cidr_block="10.0.0.0/16")
+vpcs = mf.vpc.list()
+mf.vpc.delete(vpc.id)
+
+# Lambda
+lambda_fn = mf.lambda_function.create(
+    function_name="my-api",
+    runtime="python3.9",
+    memory_mb=256,
+    timeout=30
+)
+result = mf.lambda_function.invoke(
+    function_name="my-api",
+    payload={"key": "value"}
+)
+
+# DynamoDB
+table = mf.dynamodb.create_table(
+    table_name="users",
+    partition_key="user_id"
+)
+mf.dynamodb.put_item(
+    table_name="users",
+    item={"user_id": "123", "name": "John"}
+)
+item = mf.dynamodb.get_item(
+    table_name="users",
+    key={"user_id": "123"}
+)
+
+# S3/Storage
+bucket = mf.storage.create_bucket(
+    bucket_name="my-bucket",
+    provider="s3"
+)
+mf.storage.upload_file(
+    bucket_name="my-bucket",
+    key="data.txt",
+    data=b"Hello World"
+)
+
+# SQS
+queue = mf.sqs.create_queue(queue_name="events")
+mf.sqs.send_message(queue.queue_url, "Message body")
+messages = mf.sqs.receive_messages(queue.queue_url)</pre>
+                        </div>
+                    </div>
+
+                    <div id="mocklib-hierarchy" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Organizational Hierarchy</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-4">
+<pre># Create organization
+org = mf.organization.create(
+    name="acme-corp",
+    plan="pro",
+    description="Acme Corporation"
+)
+
+# Create domain
+domain = mf.domain.create(
+    domain="example.com",
+    organization="acme-corp",
+    verified=True
+)
+
+# Create cloud environment
+dev_cloud = mf.cloud.create(
+    name="dev-cloud",
+    provider="aws",
+    region="us-east-1",
+    organization="acme-corp"
+)
+
+# Create project
+project = mf.project.create(
+    name="web-app",
+    environment="production",
+    organization="acme-corp"
+)
+
+# Bind resources to project
+vpc = mf.vpc.create(cidr_block="10.0.0.0/16")
+mf.project.bind_resource(
+    project.project_id,
+    "vpc",
+    vpc.id
+)</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- IAM -->
+                <section id="iam" class="doc-section mb-12">
+                    <h2 class="text-3xl font-bold mb-4 border-b-2 border-primary pb-2">🔐 IAM (Identity & Access Management)</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        Complete IAM functionality for access control, permissions, and policy management.
+                    </p>
+
+                    <div id="iam-users" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Users & Groups</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory iam create-user john.smith --organization acme-corp
+mockfactory iam create-group developers
+mockfactory iam add-user-to-group developers john.smith
+
+# Python SDK
+user = mf.iam.create_user(username="john.smith", organization="acme-corp")
+group = mf.iam.create_group(group_name="developers")
+mf.iam.add_user_to_group("john.smith", "developers")</pre>
+                        </div>
+                    </div>
+
+                    <div id="iam-policies" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Policies & Roles</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># Python SDK
+policy = mf.iam.create_policy(
+    policy_name="s3-read-only",
+    policy_document={
+        "Version": "2012-10-17",
+        "Statement": [{
+            "Effect": "Allow",
+            "Action": ["s3:GetObject", "s3:ListBucket"],
+            "Resource": "*"
+        }]
+    }
+)
+
+role = mf.iam.create_role(
+    role_name="lambda-execution",
+    trust_policy={
+        "Service": "lambda.amazonaws.com"
+    }
+)</pre>
+                        </div>
+                    </div>
+
+                    <div id="iam-permissions" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Permission Checks</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory iam check-permission john.smith \
+  --action s3:GetObject \
+  --resource my-bucket/file.txt
+
+mockfactory iam simulate-policy s3-read-only \
+  --action s3:GetObject \
+  --resource bucket/key
+
+# Python SDK
+result = mf.iam.check_permission(
+    username="john.smith",
+    action="s3:GetObject",
+    resource="my-bucket/file.txt"
+)
+print(f"Allowed: {result['allowed']}")
+
+# Simulate policy
+result = mf.iam.simulate_policy(
+    policy_name="s3-read-only",
+    action="s3:GetObject",
+    resource="bucket/key"
+)</pre>
+                        </div>
+                    </div>
+
+                    <div id="iam-access-keys" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Access Keys</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory iam create-access-key john.smith \
+  --description "CLI access"
+
+mockfactory iam list-access-keys john.smith
+
+# Python SDK
+access_key = mf.iam.create_access_key(
+    username="john.smith",
+    description="CLI access"
+)
+print(f"Access Key: {access_key.access_key_id}")
+print(f"Secret: {access_key.secret_access_key}")
+
+# List keys (secrets not returned)
+keys = mf.iam.list_access_keys("john.smith")</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Data Generators -->
+                <section id="generators" class="doc-section mb-12">
+                    <h2 class="text-3xl font-bold mb-4 border-b-2 border-primary pb-2">🎲 Data Generators</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        Generate realistic test data for users, employees, organizations, and complete test scenarios.
+                    </p>
+
+                    <div id="gen-users" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Users & Employees</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory generate users --count 100 --role mixed --domain acme.com
+mockfactory generate employees --count 50 --organization acme-corp
+
+# Python SDK
+users = mf.generator.generate_users(
+    count=100,
+    role="mixed",
+    organization="acme-corp",
+    domain="acme.com"
+)
+
+employees = mf.generator.generate_employees(
+    count=50,
+    organization="acme-corp",
+    departments=["engineering", "sales", "hr"]
+)</pre>
+                        </div>
+                    </div>
+
+                    <div id="gen-orgs" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Organizations</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory generate organizations --count 10
+
+# Python SDK
+orgs = mf.generator.generate_organizations(count=10)
+for org in orgs:
+    print(f"{org['name']} - {org['industry']} ({org['plan']})")</pre>
+                        </div>
+                    </div>
+
+                    <div id="gen-network" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Network Configurations</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory generate network-config --cloud prod-cloud --subnets 4
+
+# Python SDK
+network = mf.generator.generate_network_config(
+    cloud="prod-cloud",
+    vpc_cidr="10.0.0.0/16",
+    subnets=4
+)
+print(f"VPC: {network['vpc']['cidr_block']}")
+print(f"Subnets: {len(network['subnets'])}")</pre>
+                        </div>
+                    </div>
+
+                    <div id="gen-iam-policies" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">IAM Policy Templates</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory generate iam-policies \
+  --type common \
+  --services s3,dynamodb,lambda
+
+# Python SDK
+policies = mf.generator.generate_iam_policies(
+    policy_type="common",
+    services=["s3", "dynamodb", "lambda"]
+)
+for policy in policies:
+    print(f"{policy['policy_name']}: {policy['description']}")</pre>
+                        </div>
+                    </div>
+
+                    <div id="gen-scenarios" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Complete Test Scenarios</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory generate test-scenario startup
+mockfactory generate test-scenario enterprise
+mockfactory generate test-scenario multi-cloud
+
+# Python SDK
+scenario = mf.generator.generate_test_scenario("enterprise")
+# Returns complete setup with:
+# - Organization structure
+# - Employees (100+)
+# - Cloud environments (multi-region)
+# - IAM users and groups
+# - Projects and resources</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Utility Helpers -->
+                <section id="utilities" class="doc-section mb-12">
+                    <h2 class="text-3xl font-bold mb-4 border-b-2 border-primary pb-2">🛠️ Utility Helpers</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        60+ helper functions for common transformations and operations.
+                    </p>
+
+                    <div id="util-binary" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Binary/Hex Conversion</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory utilities bin2hex 11010101
+mockfactory utilities hex2bin d5
+
+# Python SDK
+hex_val = mf.utilities.bin2hex("11010101")  # "d5"
+binary = mf.utilities.hex2bin("d5")  # "11010101"</pre>
+                        </div>
+                    </div>
+
+                    <div id="util-ip" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">IP & CIDR Operations</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory utilities ip2bin 192.168.1.1
+mockfactory utilities bin2ip 11000000101010000000000100000001
+mockfactory utilities ip2long 192.168.1.1
+mockfactory utilities long2ip 3232235777
+mockfactory utilities cidr-to-range 10.0.0.0/24
+mockfactory utilities ip-in-cidr 10.0.0.50 10.0.0.0/24
+
+# Python SDK
+binary = mf.utilities.ip2bin("192.168.1.1")
+ip = mf.utilities.bin2ip("11000000101010000000000100000001")
+long_ip = mf.utilities.ip2long("192.168.1.1")  # 3232235777
+ip_from_long = mf.utilities.long2ip(3232235777)
+range_info = mf.utilities.cidr_to_range("10.0.0.0/24")
+in_range = mf.utilities.ip_in_cidr("10.0.0.50", "10.0.0.0/24")
+overlap = mf.utilities.cidr_overlap("10.0.0.0/24", "10.0.0.128/25")</pre>
+                        </div>
+                    </div>
+
+                    <div id="util-ipv6" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">IPv6 Operations</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># Python SDK
+expanded = mf.utilities.expand_ipv6("2001:db8::1")
+# "2001:0db8:0000:0000:0000:0000:0000:0001"
+
+compressed = mf.utilities.compress_ipv6(
+    "2001:0db8:0000:0000:0000:0000:0000:0001"
+)
+# "2001:db8::1"
+
+is_valid = mf.utilities.is_valid_ipv6("2001:db8::1")  # True</pre>
+                        </div>
+                    </div>
+
+                    <div id="util-encoding" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Encoding & Decoding</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory utilities base64-encode "Hello World"
+mockfactory utilities base64-decode SGVsbG8gV29ybGQ=
+mockfactory utilities url-encode "hello world & stuff"
+
+# Python SDK
+encoded = mf.utilities.base64_encode("Hello World")
+decoded = mf.utilities.base64_decode(encoded)
+url_encoded = mf.utilities.url_encode("hello world")
+url_decoded = mf.utilities.url_decode(url_encoded)</pre>
+                        </div>
+                    </div>
+
+                    <div id="util-hash" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Hashing</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory utilities hash "Hello World" --algorithm md5
+mockfactory utilities hash "Hello World" --algorithm sha256
+
+# Python SDK
+md5_hash = mf.utilities.md5("Hello World")
+sha1_hash = mf.utilities.sha1("Hello World")
+sha256_hash = mf.utilities.sha256("Hello World")
+sha512_hash = mf.utilities.sha512("Hello World")</pre>
+                        </div>
+                    </div>
+
+                    <div id="util-uuid" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">UUIDs</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory utilities uuid --count 5
+mockfactory utilities uuid --version 4
+
+# Python SDK
+uuid = mf.utilities.generate_uuid(version=4)
+is_valid = mf.utilities.validate_uuid(uuid)  # True</pre>
+                        </div>
+                    </div>
+
+                    <div id="util-time" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Time Operations</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory utilities timestamp --format unix
+mockfactory utilities timestamp --format iso8601
+
+# Python SDK
+unix_ts = mf.utilities.timestamp(format="unix")
+iso_ts = mf.utilities.timestamp(format="iso8601")
+iso_from_unix = mf.utilities.iso8601(1640995200)
+parsed_ts = mf.utilities.parse_time("2022-01-01T00:00:00Z")
+relative = mf.utilities.time_ago(1640995200)  # "2 years ago"</pre>
+                        </div>
+                    </div>
+
+                    <div id="util-strings" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">String Operations</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory utilities slugify "Hello World & Stuff!"
+mockfactory utilities random-string --length 32 --charset hex
+mockfactory utilities random-password --length 20
+
+# Python SDK
+slug = mf.utilities.slugify("Hello World!")  # "hello-world"
+random_str = mf.utilities.random_string(length=32, charset="hex")
+password = mf.utilities.random_password(
+    length=20,
+    include_symbols=True,
+    include_numbers=True
+)</pre>
+                        </div>
+                    </div>
+
+                    <div id="util-json" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">JSON/YAML Operations</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory utilities json-minify config.json
+mockfactory utilities json-pretty config.json --indent 4
+mockfactory utilities json-validate config.json
+
+# Python SDK
+json_obj = mf.utilities.yaml_to_json(yaml_string)
+yaml_str = mf.utilities.json_to_yaml(json_object)
+validation = mf.utilities.validate_json(json_string)
+validation = mf.utilities.validate_yaml(yaml_string)
+minified = mf.utilities.minify_json(json_string)
+pretty = mf.utilities.pretty_json(json_string, indent=2)</pre>
+                        </div>
+                    </div>
+
+                    <div id="util-arn" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">AWS ARN Operations</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># Python SDK
+parsed = mf.utilities.parse_arn("arn:aws:iam::123456789:user/john")
+print(f"Service: {parsed['service']}")
+print(f"Resource: {parsed['resource']}")
+
+arn = mf.utilities.build_arn(
+    service="s3",
+    resource="bucket/my-bucket",
+    account="123456789",
+    region="us-east-1"
+)
+
+is_valid = mf.utilities.validate_arn(arn)  # True</pre>
+                        </div>
+                    </div>
+
+                    <div id="util-url" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">URL Operations</h3>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre># CLI
+mockfactory utilities url-encode "hello world & stuff"
+mockfactory utilities url-decode "hello%20world%20%26%20stuff"
+
+# Python SDK
+parsed_url = mf.utilities.parse_url(
+    "https://api.example.com:8080/v1/users?page=1"
+)
+print(f"Host: {parsed_url['host']}")
+print(f"Path: {parsed_url['path']}")
+
+url = mf.utilities.build_url(
+    scheme="https",
+    host="api.example.com",
+    path="/v1/users",
+    query={"page": "1"}
+)
+
+url_encoded = mf.utilities.url_encode("hello world")
+url_decoded = mf.utilities.url_decode(url_encoded)</pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                        <h4 class="font-semibold mb-3">All Available Utilities</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+                            <div>• bin2hex / hex2bin</div>
+                            <div>• ip2bin / bin2ip</div>
+                            <div>• ip2long / long2ip</div>
+                            <div>• expand_ipv6</div>
+                            <div>• compress_ipv6</div>
+                            <div>• cidr_to_range</div>
+                            <div>• ip_in_cidr</div>
+                            <div>• base64_encode/decode</div>
+                            <div>• url_encode/decode</div>
+                            <div>• md5 / sha1 / sha256</div>
+                            <div>• generate_uuid</div>
+                            <div>• timestamp</div>
+                            <div>• iso8601</div>
+                            <div>• slugify</div>
+                            <div>• random_string</div>
+                            <div>• random_password</div>
+                            <div>• yaml_to_json</div>
+                            <div>• json_to_yaml</div>
+                            <div>• parse_arn</div>
+                            <div>• build_arn</div>
+                            <div>• parse_url</div>
+                            <div>• build_url</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- API Reference -->
+                <section id="api-reference" class="doc-section mb-12">
+                    <h2 class="text-3xl font-bold mb-4 border-b-2 border-primary pb-2">API Reference</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        Complete REST API reference for programmatic access to MockFactory.
+                    </p>
+
+                    <div id="api-authentication" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Authentication</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-3">
+                            All API requests require authentication using your API key in the Authorization header:
+                        </p>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mb-3">
+<pre>Authorization: Bearer mf_your_api_key_here</pre>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                            <h4 class="font-semibold mb-2">API Base URL</h4>
+                            <code class="text-primary">https://api.mockfactory.io/v1</code>
+                        </div>
+                    </div>
+
+                    <div id="api-rate-limits" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Rate Limits</h3>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-3">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <th class="text-left py-2">Plan</th>
+                                        <th class="text-left py-2">Requests/Minute</th>
+                                        <th class="text-left py-2">Burst</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-600 dark:text-gray-400">
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <td class="py-2">Free</td>
+                                        <td class="py-2">60</td>
+                                        <td class="py-2">100</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <td class="py-2">Pro</td>
+                                        <td class="py-2">300</td>
+                                        <td class="py-2">500</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2">Enterprise</td>
+                                        <td class="py-2">Unlimited</td>
+                                        <td class="py-2">Unlimited</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            Rate limit headers are returned with each response:
+                        </p>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm mt-2">
+<pre>X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 58
+X-RateLimit-Reset: 1640995200</pre>
+                        </div>
+                    </div>
+
+                    <div id="api-errors" class="doc-section mb-6">
+                        <h3 class="text-2xl font-semibold mb-3">Error Handling</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-3">
+                            MockFactory uses conventional HTTP response codes:
+                        </p>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-3">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <th class="text-left py-2">Code</th>
+                                        <th class="text-left py-2">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-600 dark:text-gray-400">
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <td class="py-2 font-mono">200</td>
+                                        <td class="py-2">Success</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <td class="py-2 font-mono">400</td>
+                                        <td class="py-2">Bad Request - Invalid parameters</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <td class="py-2 font-mono">401</td>
+                                        <td class="py-2">Unauthorized - Invalid API key</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <td class="py-2 font-mono">429</td>
+                                        <td class="py-2">Too Many Requests - Rate limit exceeded</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <td class="py-2 font-mono">500</td>
+                                        <td class="py-2">Internal Server Error</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            Error response format:
+                        </p>
+                        <div class="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg font-mono text-sm">
+<pre>{
+  "error": {
+    "code": "invalid_parameter",
+    "message": "cidr_block is required",
+    "param": "cidr_block"
+  }
+}</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Getting Started CTA -->
+                <div class="mt-12 bg-gradient-to-r from-primary to-secondary text-white p-8 rounded-lg text-center">
+                    <h3 class="text-2xl font-bold mb-3">Ready to Get Started?</h3>
+                    <p class="mb-4 opacity-90">Sign up now and get $5 in free credits</p>
+                    <a href="/app.html" class="inline-block px-6 py-3 bg-white text-primary rounded-lg hover:bg-gray-100 transition-colors font-semibold">
+                        Get Started Free
+                    </a>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 dark:border-gray-800 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600 dark:text-gray-400">
+            <p>&copy; 2025 MockFactory.io - Cloud Emulation Platform</p>
+            <div class="mt-4 space-x-4">
+                <a href="https://github.com/straticus1/mockfactory-cli" target="_blank" class="hover:text-primary">GitHub (CLI)</a>
+                <a href="https://github.com/afterdarksys/mocklib-python" target="_blank" class="hover:text-primary">GitHub (SDK)</a>
+                <a href="https://pypi.org/project/mockfactory-cli/" target="_blank" class="hover:text-primary">PyPI</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
