@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticating - MockFactory</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f0f23;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: #1a1a2e;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            max-width: 400px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid #2a2a3e;
+        }
+        h1 {
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .spinner {
+            border: 4px solid #2a2a3e;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .message {
+            color: #a0a0b0;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        .error {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Completing Sign In...</h1>
+        <div class="spinner"></div>
+        <p class="message" id="message">Please wait while we authenticate you</p>
+    </div>
+
+    <script>
+        // Get token from URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (token) {
+            // Store token in localStorage
+            localStorage.setItem('mf_token', token);
+
+            // Fetch user info
+            fetch('/api/v1/auth/me', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(user => {
+                // Store user info
+                localStorage.setItem('mf_user', JSON.stringify(user));
+
+                // Show success message briefly
+                document.getElementById('message').textContent = 'Success! Redirecting to dashboard...';
+
+                // Redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = '/app.html';
+                }, 500);
+            })
+            .catch(error => {
+                console.error('Error fetching user info:', error);
+                document.getElementById('message').innerHTML =
+                    '<span class="error">Authentication failed. Redirecting to login...</span>';
+                setTimeout(() => {
+                    window.location.href = '/login.html';
+                }, 2000);
+            });
+        } else {
+            // No token found, redirect to login
+            document.getElementById('message').innerHTML =
+                '<span class="error">No authentication token found. Redirecting to login...</span>';
+            setTimeout(() => {
+                window.location.href = '/login.html';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

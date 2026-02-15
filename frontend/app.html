@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -126,7 +126,13 @@
             font-size: 15px;
         }
         .hidden {
-            display: none;
+            display: none !important;
+        }
+        #create-env-modal {
+            display: flex;
+        }
+        #create-env-modal.hidden {
+            display: none !important;
         }
     </style>
 </head>
@@ -249,11 +255,11 @@
     <button id="open-assistant" style="position: fixed; bottom: 24px; right: 24px; width: 64px; height: 64px; background: #0066ff; color: white; border: none; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,102,255,0.3); cursor: pointer; font-size: 24px; font-weight: bold; z-index: 999; transition: all 0.2s;">💬</button>
 
     <!-- Create Environment Modal -->
-    <div id="create-env-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 24px;">
-        <div style="background: #ffffff; border-radius: 12px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;">
+    <div id="create-env-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 24px; pointer-events: auto;">
+        <div style="background: #ffffff; border-radius: 12px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; z-index: 2001;">
             <div style="padding: 24px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
                 <h3 style="font-size: 20px; font-weight: 600;">Create New Environment</h3>
-                <button class="close-modal" style="background: none; border: none; font-size: 28px; cursor: pointer; color: #666;">×</button>
+                <button class="close-modal" style="background: none; border: none; font-size: 28px; cursor: pointer; color: #666; position: relative; z-index: 2002;">×</button>
             </div>
             <div style="padding: 24px;">
                 <form id="create-env-form">
@@ -299,9 +305,9 @@
                         <p style="font-size: 13px; color: #666; margin-top: 4px;">Environment will auto-shutdown after this period to prevent runaway costs</p>
                     </div>
 
-                    <div style="display: flex; gap: 12px;">
-                        <button type="submit" class="button button-primary" style="flex: 1;">Create Environment</button>
-                        <button type="button" class="close-modal button" style="flex: 1;">Cancel</button>
+                    <div style="display: flex; gap: 12px; position: relative; z-index: 2002;">
+                        <button type="submit" class="button button-primary" style="flex: 1; position: relative; z-index: 2003;">Create Environment</button>
+                        <button type="button" class="close-modal button" style="flex: 1; position: relative; z-index: 2003;">Cancel</button>
                     </div>
                 </form>
             </div>
