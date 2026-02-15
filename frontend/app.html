@@ -14,10 +14,18 @@
             font-size: 16px;
             line-height: 1.5;
         }
+        html.dark body {
+            background: #0f0f23;
+            color: #e0e0e0;
+        }
         .nav {
             background: #ffffff;
             border-bottom: 1px solid #e0e0e0;
             padding: 0;
+        }
+        html.dark .nav {
+            background: #1a1a2e;
+            border-bottom: 1px solid #2a2a3e;
         }
         .nav-container {
             max-width: 1400px;
@@ -133,6 +141,35 @@
         }
         #create-env-modal.hidden {
             display: none !important;
+        }
+
+        /* Dark Mode Styles */
+        html.dark .nav h1 {
+            color: #e0e0e0;
+        }
+        html.dark .nav-links a {
+            color: #a0a0b0;
+        }
+        html.dark .nav-links a:hover,
+        html.dark .nav-links a.active {
+            background: #2a2a3e;
+            color: #e0e0e0;
+        }
+        html.dark .stat-card {
+            background: #1a1a2e;
+            border: 1px solid #2a2a3e;
+        }
+        html.dark .stat-label {
+            color: #a0a0b0;
+        }
+        html.dark .stat-value {
+            color: #e0e0e0;
+        }
+        html.dark .section-title {
+            color: #e0e0e0;
+        }
+        html.dark .empty-state {
+            color: #a0a0b0;
         }
     </style>
 </head>
