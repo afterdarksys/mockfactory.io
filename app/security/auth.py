@@ -48,7 +48,7 @@ async def get_current_user(
         return None
 
     payload = decode_token(token)
-    user_id: int = payload.get("sub")
+    user_id: int = int(payload.get("sub"))
 
     if user_id is None:
         return None
@@ -139,7 +139,7 @@ async def get_user_from_request(
     # Method 3: JWT token (existing oauth2_scheme)
     if token:
         payload = decode_token(token)
-        user_id: int = payload.get("sub")
+        user_id: int = int(payload.get("sub"))
         if user_id:
             user = db.query(User).filter(User.id == user_id).first()
             if user:
