@@ -8,6 +8,8 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.models.vpc_resources import MockSQSQueue
 from app.models.environment import Environment
+from app.services.credit_billing import deduct_credits
+from decimal import Decimal
 import uuid
 import json
 import logging
@@ -246,8 +248,14 @@ async def send_message(environment: Environment, params: dict, db: Session):
     queue.approximate_number_of_messages += 1
     db.commit()
 
-    # TODO: Deduct credits from user account
-    # Example: user.credits -= calculate_sqs_request_cost()
+    # Deduct credits from user account for send message operation
+    if environment.user_id:
+        deduct_credits(
+            db=db,
+            user_id=environment.user_id,
+            amount=Decimal("0.001"),  # 0.001 credits per message sent
+            description=f"SQS SendMessage: {queue_name}"
+        )
 
     response = f"""<?xml version="1.0"?>
 <SendMessageResponse>
@@ -322,8 +330,14 @@ async def receive_message(environment: Environment, params: dict, db: Session):
 
     logger.info(f"Received {len(messages)} messages (CREDITS USED): {queue_name}")
 
-    # TODO: Deduct credits from user account
-    # Example: user.credits -= calculate_sqs_request_cost() * len(messages)
+    # Deduct credits from user account for receive message operation
+    if environment.user_id and len(messages) > 0:
+        deduct_credits(
+            db=db,
+            user_id=environment.user_id,
+            amount=Decimal("0.001") * len(messages),  # 0.001 credits per message received
+            description=f"SQS ReceiveMessage: {queue_name} ({len(messages)} messages)"
+        )
 
     # Build XML response
     message_xml = ""

@@ -254,24 +254,92 @@ async def invoke_function(environment: Environment, params: dict, request: Reque
         # **HERE'S WHERE WE ACTUALLY RUN DOCKER** (only when invoked!)
         logger.info(f"Invoking Lambda function {function_name} - spinning up container")
 
-        # TODO: Actually execute Lambda in Docker container
-        # For now, return mock response
-        # In production, we'd:
-        # 1. Pull Lambda runtime image
-        # 2. Create container with function code
-        # 3. Execute handler
-        # 4. Capture output
-        # 5. Destroy container (unless keeping warm)
+        # Execute Lambda in Docker container
+        runtime_image = get_runtime_image(function.runtime)
 
-        mock_response = {
-            "statusCode": 200,
-            "body": json.dumps({
-                "message": "Lambda execution successful",
-                "input": json.loads(payload),
-                "function": function_name,
-                "runtime": function.runtime
-            })
-        }
+        # Decode function code
+        if function.code_zip_base64:
+            function_code = base64.b64decode(function.code_zip_base64)
+        else:
+            # If no code provided, use a simple echo function
+            function_code = None
+
+        # Run Docker container with Lambda runtime
+        try:
+            container = docker_client.containers.run(
+                runtime_image,
+                command=[function.handler, payload],
+                environment={
+                    "AWS_LAMBDA_FUNCTION_NAME": function_name,
+                    "AWS_LAMBDA_FUNCTION_VERSION": "$LATEST",
+                    "AWS_LAMBDA_FUNCTION_MEMORY_SIZE": str(function.memory_size),
+                    "AWS_REGION": environment.region or "us-east-1"
+                },
+                mem_limit=f"{function.memory_size}m",
+                network_mode="bridge",
+                remove=True,
+                detach=False,
+                stdout=True,
+                stderr=True
+            )
+
+            # Parse container output
+            output = container.decode("utf-8") if isinstance(container, bytes) else str(container)
+
+            # Try to parse as JSON response
+            try:
+                lambda_response = json.loads(output)
+            except:
+                # If not JSON, wrap in standard response
+                lambda_response = {
+                    "statusCode": 200,
+                    "body": output
+                }
+
+            mock_response = lambda_response
+
+        except docker.errors.ContainerError as e:
+            # Container execution failed
+            logger.error(f"Container execution error: {e}")
+            mock_response = {
+                "statusCode": 500,
+                "body": json.dumps({
+                    "errorMessage": str(e),
+                    "errorType": "Runtime.ContainerError"
+                })
+            }
+        except docker.errors.ImageNotFound:
+            # Runtime image not found, pull it first
+            logger.info(f"Pulling Lambda runtime image: {runtime_image}")
+            docker_client.images.pull(runtime_image)
+
+            # Retry execution
+            container = docker_client.containers.run(
+                runtime_image,
+                command=[function.handler, payload],
+                environment={
+                    "AWS_LAMBDA_FUNCTION_NAME": function_name,
+                    "AWS_LAMBDA_FUNCTION_VERSION": "$LATEST",
+                    "AWS_LAMBDA_FUNCTION_MEMORY_SIZE": str(function.memory_size),
+                    "AWS_REGION": environment.region or "us-east-1"
+                },
+                mem_limit=f"{function.memory_size}m",
+                network_mode="bridge",
+                remove=True,
+                detach=False,
+                stdout=True,
+                stderr=True
+            )
+
+            output = container.decode("utf-8") if isinstance(container, bytes) else str(container)
+            try:
+                lambda_response = json.loads(output)
+            except:
+                lambda_response = {
+                    "statusCode": 200,
+                    "body": output
+                }
+            mock_response = lambda_response
 
         duration_ms = int((time.time() - start_time) * 1000)
         billed_duration_ms = ((duration_ms // 100) + 1) * 100  # Round up to 100ms

@@ -277,15 +277,16 @@ async def get_pricing():
             },
             {
                 "id": "beginner",
-                "name": "Beginner",
+                "name": "Free Forever",
                 "price": "Free",
                 "price_monthly": 0,
-                "runs": 10,
+                "runs": 500,
                 "features": [
-                    "10 code executions per month",
-                    "All languages supported",
+                    "500 executions per month",
+                    "All AWS services enabled",
+                    "1GB storage included",
                     "Save execution history",
-                    "Basic support"
+                    "Community support"
                 ],
                 "cta": "Sign Up Free"
             },
@@ -294,10 +295,10 @@ async def get_pricing():
                 "name": "Student",
                 "price": "Free",
                 "price_monthly": 0,
-                "runs": 25,
+                "runs": 1000,
                 "features": [
-                    "25 code executions per month",
-                    "All languages supported",
+                    "1,000 executions per month",
+                    "All AWS services enabled",
                     "Perfect for coursework",
                     "Save execution history",
                     "Educational resources",
@@ -311,10 +312,10 @@ async def get_pricing():
                 "name": "Professional",
                 "price": "$19.99/month",
                 "price_monthly": 19.99,
-                "runs": 100,
+                "runs": 10000,
                 "features": [
-                    "100 code executions per month",
-                    "All languages supported",
+                    "10,000 executions per month",
+                    "All AWS services enabled",
                     "Priority support",
                     "Extended execution time (60s)",
                     "Increased memory (512MB)",
@@ -330,10 +331,10 @@ async def get_pricing():
                 "name": "Government",
                 "price": "$49.99/month",
                 "price_monthly": 49.99,
-                "runs": 500,
+                "runs": 100000,
                 "features": [
-                    "500 code executions per month",
-                    "All languages supported",
+                    "100,000 executions per month",
+                    "All AWS services enabled",
                     "Dedicated support",
                     "Extended execution time (120s)",
                     "Increased memory (1GB)",

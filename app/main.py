@@ -7,11 +7,12 @@ from slowapi.errors import RateLimitExceeded
 import asyncio
 import logging
 from app.core.config import settings
-from app.api import execute, auth, payments, environments, cloud_emulation, container_registry_emulation, aws_services_emulation, data_generation, dns_management, aws_vpc_emulator, aws_lambda_emulator, aws_dynamodb_emulator, aws_sqs_emulator, api_keys
+from app.api import execute, auth, payments, environments, cloud_emulation, container_registry_emulation, aws_services_emulation, data_generation, dns_management, aws_vpc_emulator, aws_lambda_emulator, aws_dynamodb_emulator, aws_sqs_emulator, api_keys, client_dashboard
 from app.core.database import engine, Base
 from app.services.background_tasks import start_background_tasks
 from app.core.rate_limit import limiter
 from app.middleware.rate_limit_middleware import GlobalRateLimitMiddleware
+from app.middleware.tenant_middleware import TenantMiddleware
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -71,6 +72,9 @@ app.add_middleware(
 
 # Global rate limiting middleware (tier-based limits)
 app.add_middleware(GlobalRateLimitMiddleware)
+
+# Tenant routing middleware
+app.add_middleware(TenantMiddleware)
 
 # Include routers with rate limiting
 app.include_router(
@@ -159,6 +163,13 @@ app.include_router(
     dns_management.router,
     prefix=f"{settings.API_V1_PREFIX}/environments",
     tags=["dns-management"]
+)
+
+# Client Dashboard API (requires sub-tenant routing)
+app.include_router(
+    client_dashboard.router,
+    prefix=f"{settings.API_V1_PREFIX}/dashboard",
+    tags=["client-dashboard"]
 )
 
 # AI Assistant removed - needs anthropic SDK

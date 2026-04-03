@@ -39,10 +39,10 @@ class Settings(BaseSettings):
 
     # Usage Limits (executions per month)
     RUNS_ANONYMOUS: int = 5
-    RUNS_BEGINNER: int = 10
-    RUNS_STUDENT: int = 25
-    RUNS_PROFESSIONAL: int = 100
-    RUNS_GOVERNMENT: int = 500
+    RUNS_BEGINNER: int = 500  # Free Forever tier - increased from 10
+    RUNS_STUDENT: int = 1000  # Increased for students
+    RUNS_PROFESSIONAL: int = 10000  # Increased for paid tier
+    RUNS_GOVERNMENT: int = 100000  # Increased for government tier
     RUNS_ENTERPRISE: int = -1  # Unlimited
     RUNS_CUSTOM: int = -1  # Unlimited
     RUNS_EMPLOYEE: int = -1  # Unlimited

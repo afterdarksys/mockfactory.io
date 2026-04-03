@@ -8,6 +8,8 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.models.vpc_resources import MockDynamoDBTable, MockDynamoDBItem
 from app.models.environment import Environment
+from app.services.credit_billing import deduct_credits
+from decimal import Decimal
 import uuid
 import json
 import logging
@@ -277,8 +279,14 @@ async def put_item(environment: Environment, params: dict, db: Session):
 
     db.commit()
 
-    # TODO: Deduct credits from user account here
-    # Example: user.credits -= calculate_write_cost(table, item)
+    # Deduct credits from user account for write operation
+    if environment.user_id:
+        deduct_credits(
+            db=db,
+            user_id=environment.user_id,
+            amount=Decimal("0.01"),  # 0.01 credits per write operation
+            description=f"DynamoDB PutItem: {table_name}"
+        )
 
     return Response(
         content=json.dumps({}),
@@ -330,8 +338,14 @@ async def get_item(environment: Environment, params: dict, db: Session):
 
     logger.info(f"Retrieved DynamoDB item (CREDIT USED): {table_name} / {partition_key_value}")
 
-    # TODO: Deduct credits from user account
-    # Example: user.credits -= calculate_read_cost(table, item)
+    # Deduct credits from user account for read operation
+    if environment.user_id:
+        deduct_credits(
+            db=db,
+            user_id=environment.user_id,
+            amount=Decimal("0.005"),  # 0.005 credits per read operation
+            description=f"DynamoDB GetItem: {table_name}"
+        )
 
     return Response(
         content=json.dumps({"Item": item.item_data}),

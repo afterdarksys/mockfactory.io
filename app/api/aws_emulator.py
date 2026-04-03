@@ -4,12 +4,14 @@ Emulates AWS EC2, S3, Lambda, RDS APIs
 Translates requests to MockFactory infrastructure
 """
 from fastapi import APIRouter, Depends, HTTPException, Request, Header, Response
+from app.services.sqs_rabbitmq_bridge import create_queue, send_message, receive_message, delete_queue
 from sqlalchemy.orm import Session
 from typing import Optional
 import json
 import uuid
 import hashlib
 from datetime import datetime
+from app.services.provisioning_manager import provisioning_manager
 
 from app.core.database import get_db
 from app.models.environment import Environment, EnvironmentStatus
@@ -81,6 +83,16 @@ async def aws_ec2_api(
         return await ec2_stop_instances(environment, params, db)
     elif action == 'StartInstances':
         return await ec2_start_instances(environment, params, db)
+    elif action == 'CreateDBInstance':
+        return await rds_create_db_instance(environment, params, db)
+    elif action == 'CreateQueue':
+        return await sqs_create_queue(environment, params, db)
+    elif action == 'SendMessage':
+        return await sqs_send_message(environment, params, db)
+    elif action == 'ReceiveMessage':
+        return await sqs_receive_message(environment, params, db)
+    elif action == 'DeleteQueue':
+        return await sqs_delete_queue(environment, params, db)
     else:
         raise HTTPException(status_code=400, detail=f"Unsupported action: {action}")
 
@@ -272,6 +284,53 @@ async def ec2_start_instances(environment: Environment, params: dict, db: Sessio
 
     return Response(content=xml_response, media_type="application/xml")
 
+
+
+async def rds_create_db_instance(environment: Environment, params: dict, db: Session):
+    """Create RDS instance using Real Postgres via provisioning_manager"""
+    db_instance_identifier = params.get('DBInstanceIdentifier', f"mock-db-{uuid.uuid4().hex[:8]}")
+    
+    # Spin up Real Postgres using the Provisioning Manager
+    res = provisioning_manager.provision_postgres(environment.id)
+    
+    if res.get("status") == "error":
+        raise HTTPException(status_code=500, detail=f"Failed to provision RDS: {res.get('message')}")
+        
+    port = res["ports"]["5432"]
+    host = res["host"]
+    
+    # Create the MockRDSInstance record
+    instance = MockRDSInstance(
+        id=f"db-{uuid.uuid4().hex[:17]}",
+        environment_id=environment.id,
+        instance_identifier=db_instance_identifier,
+        engine="postgres",
+        state=ResourceStatus.RUNNING,
+        endpoint_address=host,
+        endpoint_port=port
+    )
+    db.add(instance)
+    db.commit()
+
+    xml_response = f"""<?xml version="1.0" encoding="UTF-8"?>
+<CreateDBInstanceResponse xmlns="http://rds.amazonaws.com/doc/2014-10-31/">
+  <CreateDBInstanceResult>
+    <DBInstance>
+      <DBInstanceIdentifier>{db_instance_identifier}</DBInstanceIdentifier>
+      <DBInstanceStatus>available</DBInstanceStatus>
+      <Engine>postgres</Engine>
+      <Endpoint>
+        <Address>{host}</Address>
+        <Port>{port}</Port>
+      </Endpoint>
+    </DBInstance>
+  </CreateDBInstanceResult>
+  <ResponseMetadata>
+    <RequestId>{uuid.uuid4()}</RequestId>
+  </ResponseMetadata>
+</CreateDBInstanceResponse>"""
+
+    return Response(content=xml_response, media_type="application/xml")
 
 # ============================================================================
 # AWS S3 Emulation
