@@ -1204,3 +1204,522 @@ async def list_oci_images(
     if next_page:
         h["opc-next-page"] = next_page
     return Response(content=json.dumps({"items": items}), headers=h, media_type="application/json")
+
+
+# ============================================================================
+# Networking — missing GET-by-ID and DELETE endpoints
+# ============================================================================
+
+@router.get("/20160918/subnets/{subnet_id}")
+async def get_subnet(subnet_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    subnet = find_by_id(resources.get("oci_subnets", []), "id", subnet_id)
+    if not subnet:
+        raise HTTPException(404, "Subnet not found")
+    return _ok(subnet, etag=etag_random())
+
+
+@router.delete("/20160918/subnets/{subnet_id}")
+async def delete_subnet(subnet_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    if not remove_by_id(resources.get("oci_subnets", []), "id", subnet_id):
+        raise HTTPException(404, "Subnet not found")
+    flag_resources_modified(db, env)
+    return Response(status_code=204, headers=oci_headers())
+
+
+@router.get("/20160918/internetGateways")
+async def list_internet_gateways(
+    vcnId: Optional[str] = None, compartmentId: Optional[str] = None,
+    limit: int = 100, page: Optional[str] = None,
+    request: Request = None, db: Session = Depends(get_db),
+):
+    env = _env(request, db)
+    resources = get_resources(env)
+    igws = resources.get("oci_igws", [])
+    if vcnId:
+        igws = [i for i in igws if i.get("vcnId") == vcnId]
+    items, next_page = paginate(igws, page, limit)
+    h = oci_headers()
+    if next_page:
+        h["opc-next-page"] = next_page
+    return Response(content=json.dumps({"items": items}), headers=h, media_type="application/json")
+
+
+@router.get("/20160918/internetGateways/{igw_id}")
+async def get_internet_gateway(igw_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    igw = find_by_id(resources.get("oci_igws", []), "id", igw_id)
+    if not igw:
+        raise HTTPException(404, "Internet Gateway not found")
+    return _ok(igw)
+
+
+@router.put("/20160918/internetGateways/{igw_id}")
+async def update_internet_gateway(igw_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    body = await request.json()
+    resources = get_resources(env)
+    igw = find_by_id(resources.get("oci_igws", []), "id", igw_id)
+    if not igw:
+        raise HTTPException(404, "Internet Gateway not found")
+    if "isEnabled" in body:
+        igw["isEnabled"] = body["isEnabled"]
+    if "displayName" in body:
+        igw["displayName"] = body["displayName"]
+    flag_resources_modified(db, env)
+    return _ok(igw)
+
+
+@router.delete("/20160918/internetGateways/{igw_id}")
+async def delete_internet_gateway(igw_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    if not remove_by_id(resources.get("oci_igws", []), "id", igw_id):
+        raise HTTPException(404, "Internet Gateway not found")
+    flag_resources_modified(db, env)
+    return Response(status_code=204, headers=oci_headers())
+
+
+@router.get("/20160918/routeTables")
+async def list_route_tables(
+    vcnId: Optional[str] = None, compartmentId: Optional[str] = None,
+    limit: int = 100, page: Optional[str] = None,
+    request: Request = None, db: Session = Depends(get_db),
+):
+    env = _env(request, db)
+    resources = get_resources(env)
+    rts = resources.get("oci_route_tables", [])
+    if vcnId:
+        rts = [r for r in rts if r.get("vcnId") == vcnId]
+    items, next_page = paginate(rts, page, limit)
+    h = oci_headers()
+    if next_page:
+        h["opc-next-page"] = next_page
+    return Response(content=json.dumps({"items": items}), headers=h, media_type="application/json")
+
+
+@router.get("/20160918/routeTables/{rt_id}")
+async def get_route_table(rt_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    rt = find_by_id(resources.get("oci_route_tables", []), "id", rt_id)
+    if not rt:
+        raise HTTPException(404, "Route Table not found")
+    return _ok(rt)
+
+
+@router.put("/20160918/routeTables/{rt_id}")
+async def update_route_table(rt_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    body = await request.json()
+    resources = get_resources(env)
+    rt = find_by_id(resources.get("oci_route_tables", []), "id", rt_id)
+    if not rt:
+        raise HTTPException(404, "Route Table not found")
+    if "routeRules" in body:
+        rt["routeRules"] = body["routeRules"]
+    if "displayName" in body:
+        rt["displayName"] = body["displayName"]
+    flag_resources_modified(db, env)
+    return _ok(rt)
+
+
+@router.delete("/20160918/routeTables/{rt_id}")
+async def delete_route_table(rt_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    if not remove_by_id(resources.get("oci_route_tables", []), "id", rt_id):
+        raise HTTPException(404, "Route Table not found")
+    flag_resources_modified(db, env)
+    return Response(status_code=204, headers=oci_headers())
+
+
+@router.get("/20160918/securityLists")
+async def list_security_lists(
+    vcnId: Optional[str] = None, compartmentId: Optional[str] = None,
+    limit: int = 100, page: Optional[str] = None,
+    request: Request = None, db: Session = Depends(get_db),
+):
+    env = _env(request, db)
+    resources = get_resources(env)
+    sls = resources.get("oci_security_lists", [])
+    if vcnId:
+        sls = [s for s in sls if s.get("vcnId") == vcnId]
+    items, next_page = paginate(sls, page, limit)
+    h = oci_headers()
+    if next_page:
+        h["opc-next-page"] = next_page
+    return Response(content=json.dumps({"items": items}), headers=h, media_type="application/json")
+
+
+@router.get("/20160918/securityLists/{sl_id}")
+async def get_security_list(sl_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    sl = find_by_id(resources.get("oci_security_lists", []), "id", sl_id)
+    if not sl:
+        raise HTTPException(404, "Security List not found")
+    return _ok(sl)
+
+
+@router.put("/20160918/securityLists/{sl_id}")
+async def update_security_list(sl_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    body = await request.json()
+    resources = get_resources(env)
+    sl = find_by_id(resources.get("oci_security_lists", []), "id", sl_id)
+    if not sl:
+        raise HTTPException(404, "Security List not found")
+    for k in ("egressSecurityRules", "ingressSecurityRules", "displayName"):
+        if k in body:
+            sl[k] = body[k]
+    flag_resources_modified(db, env)
+    return _ok(sl)
+
+
+@router.delete("/20160918/securityLists/{sl_id}")
+async def delete_security_list(sl_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    if not remove_by_id(resources.get("oci_security_lists", []), "id", sl_id):
+        raise HTTPException(404, "Security List not found")
+    flag_resources_modified(db, env)
+    return Response(status_code=204, headers=oci_headers())
+
+
+# ============================================================================
+# IAM — missing GET-by-ID, UPDATE, DELETE endpoints
+# ============================================================================
+
+@router.get("/20160918/users/{user_id}")
+async def get_user(user_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    user = find_by_id(resources.get("oci_users", []), "id", user_id)
+    if not user:
+        raise HTTPException(404, "User not found")
+    return _ok(user)
+
+
+@router.put("/20160918/users/{user_id}")
+async def update_user(user_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    body = await request.json()
+    resources = get_resources(env)
+    user = find_by_id(resources.get("oci_users", []), "id", user_id)
+    if not user:
+        raise HTTPException(404, "User not found")
+    for k in ("description", "email", "freeformTags"):
+        if k in body:
+            user[k] = body[k]
+    flag_resources_modified(db, env)
+    return _ok(user)
+
+
+@router.delete("/20160918/users/{user_id}")
+async def delete_user(user_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    if not remove_by_id(resources.get("oci_users", []), "id", user_id):
+        raise HTTPException(404, "User not found")
+    flag_resources_modified(db, env)
+    return Response(status_code=204, headers=oci_headers())
+
+
+@router.get("/20160918/groups")
+async def list_groups(
+    compartmentId: Optional[str] = None,
+    limit: int = 100, page: Optional[str] = None,
+    request: Request = None, db: Session = Depends(get_db),
+):
+    env = _env(request, db)
+    resources = get_resources(env)
+    groups = resources.get("oci_groups", [])
+    items, next_page = paginate(groups, page, limit)
+    h = oci_headers()
+    if next_page:
+        h["opc-next-page"] = next_page
+    return Response(content=json.dumps({"items": items}), headers=h, media_type="application/json")
+
+
+@router.get("/20160918/groups/{group_id}")
+async def get_group(group_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    group = find_by_id(resources.get("oci_groups", []), "id", group_id)
+    if not group:
+        raise HTTPException(404, "Group not found")
+    return _ok(group)
+
+
+@router.put("/20160918/groups/{group_id}")
+async def update_group(group_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    body = await request.json()
+    resources = get_resources(env)
+    group = find_by_id(resources.get("oci_groups", []), "id", group_id)
+    if not group:
+        raise HTTPException(404, "Group not found")
+    for k in ("description", "freeformTags"):
+        if k in body:
+            group[k] = body[k]
+    flag_resources_modified(db, env)
+    return _ok(group)
+
+
+@router.delete("/20160918/groups/{group_id}")
+async def delete_group(group_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    if not remove_by_id(resources.get("oci_groups", []), "id", group_id):
+        raise HTTPException(404, "Group not found")
+    flag_resources_modified(db, env)
+    return Response(status_code=204, headers=oci_headers())
+
+
+@router.post("/20160918/userGroupMemberships")
+async def add_user_to_group(request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    body = await request.json()
+    resources = get_resources(env)
+    membership_id = ocid("userGroupMembership")
+    membership = {
+        "id": membership_id,
+        "userId": body.get("userId"),
+        "groupId": body.get("groupId"),
+        "compartmentId": DEFAULT_OCI_COMPARTMENT,
+        "lifecycleState": "ACTIVE",
+        "timeCreated": utcnow_iso(),
+    }
+    resources.setdefault("oci_group_memberships", []).append(membership)
+    flag_resources_modified(db, env)
+    return _ok(membership, status=200)
+
+
+@router.get("/20160918/userGroupMemberships")
+async def list_user_group_memberships(
+    compartmentId: Optional[str] = None,
+    userId: Optional[str] = None,
+    groupId: Optional[str] = None,
+    limit: int = 100, page: Optional[str] = None,
+    request: Request = None, db: Session = Depends(get_db),
+):
+    env = _env(request, db)
+    resources = get_resources(env)
+    memberships = resources.get("oci_group_memberships", [])
+    if userId:
+        memberships = [m for m in memberships if m.get("userId") == userId]
+    if groupId:
+        memberships = [m for m in memberships if m.get("groupId") == groupId]
+    items, next_page = paginate(memberships, page, limit)
+    h = oci_headers()
+    if next_page:
+        h["opc-next-page"] = next_page
+    return Response(content=json.dumps({"items": items}), headers=h, media_type="application/json")
+
+
+@router.delete("/20160918/userGroupMemberships/{membership_id}")
+async def remove_user_from_group(membership_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    if not remove_by_id(resources.get("oci_group_memberships", []), "id", membership_id):
+        raise HTTPException(404, "Membership not found")
+    flag_resources_modified(db, env)
+    return Response(status_code=204, headers=oci_headers())
+
+
+@router.get("/20160918/compartments/{compartment_id}")
+async def get_compartment(compartment_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    cmp = find_by_id(resources.get("oci_compartments", []), "id", compartment_id)
+    if not cmp:
+        raise HTTPException(404, "Compartment not found")
+    return _ok(cmp)
+
+
+@router.put("/20160918/compartments/{compartment_id}")
+async def update_compartment(compartment_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    body = await request.json()
+    resources = get_resources(env)
+    cmp = find_by_id(resources.get("oci_compartments", []), "id", compartment_id)
+    if not cmp:
+        raise HTTPException(404, "Compartment not found")
+    for k in ("name", "description", "freeformTags", "definedTags"):
+        if k in body:
+            cmp[k] = body[k]
+    flag_resources_modified(db, env)
+    return _ok(cmp)
+
+
+@router.delete("/20160918/compartments/{compartment_id}")
+async def delete_compartment(compartment_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    if not remove_by_id(resources.get("oci_compartments", []), "id", compartment_id):
+        raise HTTPException(404, "Compartment not found")
+    flag_resources_modified(db, env)
+    return Response(status_code=204, headers=oci_headers())
+
+
+@router.get("/20160918/policies/{policy_id}")
+async def get_policy(policy_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    policy = find_by_id(resources.get("oci_policies", []), "id", policy_id)
+    if not policy:
+        raise HTTPException(404, "Policy not found")
+    return _ok(policy)
+
+
+@router.put("/20160918/policies/{policy_id}")
+async def update_policy(policy_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    body = await request.json()
+    resources = get_resources(env)
+    policy = find_by_id(resources.get("oci_policies", []), "id", policy_id)
+    if not policy:
+        raise HTTPException(404, "Policy not found")
+    for k in ("description", "statements", "freeformTags", "definedTags"):
+        if k in body:
+            policy[k] = body[k]
+    flag_resources_modified(db, env)
+    return _ok(policy)
+
+
+@router.delete("/20160918/policies/{policy_id}")
+async def delete_policy(policy_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    if not remove_by_id(resources.get("oci_policies", []), "id", policy_id):
+        raise HTTPException(404, "Policy not found")
+    flag_resources_modified(db, env)
+    return Response(status_code=204, headers=oci_headers())
+
+
+@router.get("/20160918/users/{user_id}/apiKeys")
+async def list_api_keys(user_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    keys = resources.get("oci_api_keys", {}).get(user_id, [])
+    return _ok({"items": keys})
+
+
+@router.delete("/20160918/users/{user_id}/apiKeys/{fingerprint}")
+async def delete_api_key(user_id: str, fingerprint: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    keys = resources.get("oci_api_keys", {}).get(user_id, [])
+    original_len = len(keys)
+    resources["oci_api_keys"][user_id] = [k for k in keys if k.get("fingerprint") != fingerprint]
+    if len(resources["oci_api_keys"][user_id]) == original_len:
+        raise HTTPException(404, "API key not found")
+    flag_resources_modified(db, env)
+    return Response(status_code=204, headers=oci_headers())
+
+
+# ============================================================================
+# Block Volume — missing GET list and backups
+# ============================================================================
+
+@router.get("/20160918/volumeAttachments")
+async def list_volume_attachments(
+    compartmentId: Optional[str] = None,
+    instanceId: Optional[str] = None,
+    volumeId: Optional[str] = None,
+    limit: int = 100, page: Optional[str] = None,
+    request: Request = None, db: Session = Depends(get_db),
+):
+    env = _env(request, db)
+    resources = get_resources(env)
+    atts = resources.get("oci_volume_attachments", [])
+    if instanceId:
+        atts = [a for a in atts if a.get("instanceId") == instanceId]
+    if volumeId:
+        atts = [a for a in atts if a.get("volumeId") == volumeId]
+    items, next_page = paginate(atts, page, limit)
+    h = oci_headers()
+    if next_page:
+        h["opc-next-page"] = next_page
+    return Response(content=json.dumps({"items": items}), headers=h, media_type="application/json")
+
+
+@router.get("/20160918/volumeAttachments/{attachment_id}")
+async def get_volume_attachment(attachment_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    att = find_by_id(resources.get("oci_volume_attachments", []), "id", attachment_id)
+    if not att:
+        raise HTTPException(404, "Volume attachment not found")
+    return _ok(att)
+
+
+@router.post("/20160918/volumeBackups")
+async def create_volume_backup(request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    body = await request.json()
+    resources = get_resources(env)
+    resources.setdefault("oci_volume_backups", [])
+
+    backup_id = ocid("volumebackup")
+    backup = {
+        "id": backup_id,
+        "volumeId": body.get("volumeId"),
+        "compartmentId": body.get("compartmentId", DEFAULT_OCI_COMPARTMENT),
+        "displayName": body.get("displayName", f"backup-{backup_id[-8:]}"),
+        "type": body.get("type", "INCREMENTAL"),
+        "lifecycleState": "AVAILABLE",
+        "sizeInGBs": body.get("sizeInGBs", 50),
+        "uniqueSizeInGBs": body.get("sizeInGBs", 50),
+        "timeCreated": utcnow_iso(),
+        "timeRequestReceived": utcnow_iso(),
+        "expirationTime": None,
+        "freeformTags": body.get("freeformTags", {}),
+    }
+    resources["oci_volume_backups"].append(backup)
+    flag_resources_modified(db, env)
+    return _ok(backup, status=200)
+
+
+@router.get("/20160918/volumeBackups")
+async def list_volume_backups(
+    compartmentId: Optional[str] = None,
+    volumeId: Optional[str] = None,
+    limit: int = 100, page: Optional[str] = None,
+    request: Request = None, db: Session = Depends(get_db),
+):
+    env = _env(request, db)
+    resources = get_resources(env)
+    backups = resources.get("oci_volume_backups", [])
+    if volumeId:
+        backups = [b for b in backups if b.get("volumeId") == volumeId]
+    items, next_page = paginate(backups, page, limit)
+    h = oci_headers()
+    if next_page:
+        h["opc-next-page"] = next_page
+    return Response(content=json.dumps({"items": items}), headers=h, media_type="application/json")
+
+
+@router.get("/20160918/volumeBackups/{backup_id}")
+async def get_volume_backup(backup_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    backup = find_by_id(resources.get("oci_volume_backups", []), "id", backup_id)
+    if not backup:
+        raise HTTPException(404, "Volume backup not found")
+    return _ok(backup)
+
+
+@router.delete("/20160918/volumeBackups/{backup_id}")
+async def delete_volume_backup(backup_id: str, request: Request, db: Session = Depends(get_db)):
+    env = _env(request, db)
+    resources = get_resources(env)
+    if not remove_by_id(resources.get("oci_volume_backups", []), "id", backup_id):
+        raise HTTPException(404, "Volume backup not found")
+    flag_resources_modified(db, env)
+    return Response(status_code=204, headers=oci_headers())

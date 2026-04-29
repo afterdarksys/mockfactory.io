@@ -7,7 +7,7 @@ from slowapi.errors import RateLimitExceeded
 import asyncio
 import logging
 from app.core.config import settings
-from app.api import execute, auth, payments, environments, cloud_emulation, container_registry_emulation, aws_services_emulation, oci_emulation, compute_emulation, data_generation, dns_management, aws_vpc_emulator, aws_lambda_emulator, aws_dynamodb_emulator, aws_sqs_emulator, api_keys, client_dashboard
+from app.api import execute, auth, payments, environments, cloud_emulation, container_registry_emulation, aws_services_emulation, oci_emulation, oci_functions_emulator, oci_queue_emulator, oci_streaming_emulator, oci_database_emulator, oci_notifications_emulator, compute_emulation, data_generation, dns_management, aws_vpc_emulator, aws_lambda_emulator, aws_dynamodb_emulator, aws_sqs_emulator, api_keys, client_dashboard
 from app.core.database import engine, Base
 from app.services.background_tasks import start_background_tasks
 from app.core.rate_limit import limiter
@@ -130,6 +130,36 @@ app.include_router(
 app.include_router(
     oci_emulation.router,
     tags=["oci-emulation"]
+)
+
+# OCI Functions (applications + functions CRUD, Docker-backed invocation)
+app.include_router(
+    oci_functions_emulator.router,
+    tags=["oci-functions"]
+)
+
+# OCI Queue (Redis-backed message queuing)
+app.include_router(
+    oci_queue_emulator.router,
+    tags=["oci-queue"]
+)
+
+# OCI Streaming (Redis Streams-backed, Kafka-compatible)
+app.include_router(
+    oci_streaming_emulator.router,
+    tags=["oci-streaming"]
+)
+
+# OCI Database (Autonomous DB + MySQL DB System)
+app.include_router(
+    oci_database_emulator.router,
+    tags=["oci-database"]
+)
+
+# OCI Notifications / ONS (topics, subscriptions, publish)
+app.include_router(
+    oci_notifications_emulator.router,
+    tags=["oci-notifications"]
 )
 
 # GCP Compute Engine + Azure VM emulation
