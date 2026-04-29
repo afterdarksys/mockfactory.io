@@ -29,6 +29,35 @@ services:
       timeout: 5s
       retries: 5
 
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-mockfactory}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-mockfactory123}
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  registry:
+    image: registry:2
+    ports:
+      - "5000:5000"
+    volumes:
+      - registry_data:/var/lib/registry
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:5000/v2/"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   api:
     build: .
     ports:
@@ -36,6 +65,10 @@ services:
     environment:
       - DATABASE_URL=postgresql://mockfactory:password@postgres:5432/mockfactory
       - REDIS_URL=redis://redis:6379/0
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-mockfactory}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-mockfactory123}
+      - REGISTRY_HOST=registry:5000
     volumes:
       - ./app:/app/app
       - /var/run/docker.sock:/var/run/docker.sock
@@ -44,9 +77,15 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      minio:
+        condition: service_healthy
+      registry:
+        condition: service_healthy
     env_file:
       - .env
 
 volumes:
   postgres_data:
   redis_data:
+  minio_data:
+  registry_data:

@@ -171,6 +171,57 @@
         html.dark .empty-state {
             color: #a0a0b0;
         }
+
+        /* Dark Mode - Modal Styles (using !important to override inline styles) */
+        html.dark #create-env-modal > div {
+            background: #1a1a2e !important;
+            color: #e0e0e0 !important;
+        }
+        html.dark #create-env-modal h3 {
+            color: #e0e0e0 !important;
+        }
+        html.dark #create-env-modal label {
+            color: #e0e0e0 !important;
+        }
+        html.dark #create-env-modal input[type="text"],
+        html.dark #create-env-modal input[type="number"] {
+            background: #0f0f23 !important;
+            border: 1px solid #2a2a3e !important;
+            color: #e0e0e0 !important;
+        }
+        html.dark #create-env-modal input[type="text"]::placeholder,
+        html.dark #create-env-modal input[type="number"]::placeholder {
+            color: #666 !important;
+        }
+        html.dark #create-env-modal input[type="checkbox"] + span {
+            color: #e0e0e0 !important;
+        }
+        html.dark #create-env-modal .close-modal {
+            color: #a0a0b0 !important;
+        }
+        html.dark #create-env-modal .close-modal:hover {
+            color: #e0e0e0 !important;
+        }
+        html.dark #create-env-modal label[style*="padding"] {
+            background: #0f0f23 !important;
+            border: 1px solid #2a2a3e !important;
+        }
+        html.dark #create-env-modal label[style*="padding"]:hover {
+            background: #2a2a3e !important;
+            border-color: #3a3a4e !important;
+        }
+        html.dark #create-env-modal p {
+            color: #a0a0b0 !important;
+        }
+        html.dark #create-env-modal > div > div:first-child {
+            border-bottom: 1px solid #2a2a3e !important;
+        }
+        html.dark #create-env-modal span[style*="color"] {
+            color: #e0e0e0 !important;
+        }
+        html.dark #create-env-modal span[style*="font-weight: 600"] {
+            color: #0066ff !important;
+        }
     </style>
 </head>
 <body>

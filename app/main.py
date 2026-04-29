@@ -7,7 +7,7 @@ from slowapi.errors import RateLimitExceeded
 import asyncio
 import logging
 from app.core.config import settings
-from app.api import execute, auth, payments, environments, cloud_emulation, container_registry_emulation, aws_services_emulation, data_generation, dns_management, aws_vpc_emulator, aws_lambda_emulator, aws_dynamodb_emulator, aws_sqs_emulator, api_keys, client_dashboard
+from app.api import execute, auth, payments, environments, cloud_emulation, container_registry_emulation, aws_services_emulation, oci_emulation, compute_emulation, data_generation, dns_management, aws_vpc_emulator, aws_lambda_emulator, aws_dynamodb_emulator, aws_sqs_emulator, api_keys, client_dashboard
 from app.core.database import engine, Base
 from app.services.background_tasks import start_background_tasks
 from app.core.rate_limit import limiter
@@ -124,6 +124,18 @@ app.include_router(
 app.include_router(
     aws_services_emulation.router,
     tags=["aws-services"]
+)
+
+# OCI emulation (Object Storage, Compute, VCN, IAM, Block Volume, OCIR)
+app.include_router(
+    oci_emulation.router,
+    tags=["oci-emulation"]
+)
+
+# GCP Compute Engine + Azure VM emulation
+app.include_router(
+    compute_emulation.router,
+    tags=["compute-emulation"]
 )
 
 # AWS VPC emulation (backed by REAL OCI VCNs in isolated compartment)
