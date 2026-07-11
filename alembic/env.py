@@ -20,6 +20,9 @@ from app.models.execution import Execution
 from app.models.api_key import APIKey
 from app.models.port_allocation import PortAllocation
 from app.models.dns_record import DNSRecord
+from app.models.organization import Organization, OrganizationMembership, Project, ProjectMembership
+from app.models.audit import AuditEvent
+from app.models.node import NodeAgent
 
 # this is the Alembic Config object
 config = context.config

@@ -1,7 +1,7 @@
 """
 API Key Model - For programmatic access to environments
 """
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.core.database import Base
@@ -22,6 +22,8 @@ class APIKey(Base):
     key_hash = Column(String, unique=True, nullable=False, index=True)  # SHA256 hash
     prefix = Column(String, nullable=False)  # First 8 chars for identification (e.g., "mf_12345...")
     environment_id = Column(String, ForeignKey("environments.id"), nullable=True)  # Optional environment restriction
+    project_id = Column(Integer, ForeignKey("projects.id"), nullable=True, index=True)
+    scopes = Column(JSON, nullable=False, default=list)
     is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     last_used_at = Column(DateTime, nullable=True)

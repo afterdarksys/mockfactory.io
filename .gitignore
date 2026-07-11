@@ -45,10 +45,6 @@ wheels/
 # Docker
 docker-compose.override.yml
 
-# Alembic
-alembic/versions/*.py
-!alembic/versions/__init__.py
-
 # Logs
 *.log
 logs/
