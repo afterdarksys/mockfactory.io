@@ -21,8 +21,15 @@ import time
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-# Docker client
-docker_client = docker.from_env()
+_docker_client = None
+
+
+def get_docker_client():
+    """Connect lazily so importing the API never requires a Docker daemon."""
+    global _docker_client
+    if _docker_client is None:
+        _docker_client = docker.from_env()
+    return _docker_client
 
 
 def generate_lambda_arn(region: str, account_id: str, function_name: str) -> str:
@@ -266,7 +273,7 @@ async def invoke_function(environment: Environment, params: dict, request: Reque
 
         # Run Docker container with Lambda runtime
         try:
-            container = docker_client.containers.run(
+            container = get_docker_client().containers.run(
                 runtime_image,
                 command=[function.handler, payload],
                 environment={
@@ -311,10 +318,10 @@ async def invoke_function(environment: Environment, params: dict, request: Reque
         except docker.errors.ImageNotFound:
             # Runtime image not found, pull it first
             logger.info(f"Pulling Lambda runtime image: {runtime_image}")
-            docker_client.images.pull(runtime_image)
+            get_docker_client().images.pull(runtime_image)
 
             # Retry execution
-            container = docker_client.containers.run(
+            container = get_docker_client().containers.run(
                 runtime_image,
                 command=[function.handler, payload],
                 environment={
@@ -475,7 +482,7 @@ async def delete_function(environment: Environment, params: dict, db: Session):
     # Stop and remove Docker container if running
     if function.docker_container_id:
         try:
-            container = docker_client.containers.get(function.docker_container_id)
+            container = get_docker_client().containers.get(function.docker_container_id)
             container.stop()
             container.remove()
             logger.info(f"Stopped Lambda container: {function.docker_container_id}")

@@ -6,6 +6,7 @@ __pycache__/
 .Python
 env/
 venv/
+.venv/
 ENV/
 build/
 develop-eggs/
@@ -43,10 +44,6 @@ wheels/
 
 # Docker
 docker-compose.override.yml
-
-# Alembic
-alembic/versions/*.py
-!alembic/versions/__init__.py
 
 # Logs
 *.log

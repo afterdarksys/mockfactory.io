@@ -11,7 +11,7 @@ from app.core.database import get_db
 from app.models.user import User
 from app.models.environment import Environment, EnvironmentStatus
 from app.models.dns_record import DNSRecord, DNSRecordType
-from app.security.auth import get_current_user
+from app.security.auth import require_user
 
 router = APIRouter()
 
@@ -124,7 +124,7 @@ async def update_environment_hostname(
     environment_id: str,
     request: EnvironmentHostnameUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """
     Set custom hostname for environment
@@ -173,7 +173,7 @@ async def create_dns_record(
     environment_id: str,
     request: DNSRecordCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """
     Create DNS record for environment
@@ -244,7 +244,7 @@ async def list_dns_records(
     record_type: Optional[DNSRecordType] = None,
     name: Optional[str] = None,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """
     List all DNS records for environment
@@ -293,7 +293,7 @@ async def get_dns_record(
     environment_id: str,
     record_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """Get specific DNS record by ID"""
     environment = db.query(Environment).filter(
@@ -332,7 +332,7 @@ async def update_dns_record(
     record_id: int,
     request: DNSRecordUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """
     Update DNS record
@@ -390,7 +390,7 @@ async def delete_dns_record(
     environment_id: str,
     record_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """Delete DNS record"""
     environment = db.query(Environment).filter(
@@ -420,7 +420,7 @@ async def bulk_create_dns_records(
     environment_id: str,
     requests: List[DNSRecordCreate],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """
     Bulk create DNS records

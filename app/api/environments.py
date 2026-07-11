@@ -9,7 +9,7 @@ import re
 from app.core.database import get_db
 from app.models.user import User
 from app.models.environment import Environment, EnvironmentStatus, ServiceType, EnvironmentUsageLog
-from app.security.auth import get_current_user
+from app.security.auth import require_user
 from app.services.environment_provisioner import EnvironmentProvisioner
 
 router = APIRouter()
@@ -128,7 +128,7 @@ def generate_environment_id() -> str:
 async def create_environment(
     request: EnvironmentCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """
     Create a new mock environment with requested services
@@ -182,7 +182,7 @@ async def create_environment(
 @router.get("/", response_model=EnvironmentListResponse)
 async def list_environments(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_user),
     status_filter: EnvironmentStatus | None = None
 ):
     """
@@ -210,7 +210,7 @@ async def list_environments(
 async def get_environment(
     environment_id: str,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """Get details of a specific environment"""
     environment = db.query(Environment).filter(
@@ -231,7 +231,7 @@ async def get_environment(
 async def destroy_environment(
     environment_id: str,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """
     Destroy an environment and all its resources
@@ -285,7 +285,7 @@ async def destroy_environment(
 async def stop_environment(
     environment_id: str,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """
     Stop (pause) an environment
@@ -332,7 +332,7 @@ async def stop_environment(
 async def start_environment(
     environment_id: str,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """
     Start (resume) a stopped environment
