@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, Header, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from app.core.config import settings
@@ -110,8 +110,8 @@ async def verify_api_key(api_key: str, db: Session) -> Optional[User]:
 
 
 async def get_user_from_request(
-    authorization: Optional[str] = None,
-    x_api_key: Optional[str] = None,
+    authorization: Optional[str] = Header(default=None, alias="Authorization"),
+    x_api_key: Optional[str] = Header(default=None, alias="X-API-Key"),
     token: Optional[str] = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
 ) -> Optional[User]:
@@ -149,8 +149,8 @@ async def get_user_from_request(
 
 
 async def require_authenticated_request(
-    authorization: Optional[str] = None,
-    x_api_key: Optional[str] = None,
+    authorization: Optional[str] = Header(default=None, alias="Authorization"),
+    x_api_key: Optional[str] = Header(default=None, alias="X-API-Key"),
     token: Optional[str] = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
 ) -> User:

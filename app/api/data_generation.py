@@ -16,7 +16,7 @@ import re
 from app.core.database import get_db
 from app.models.user import User
 from app.models.environment import Environment, EnvironmentStatus
-from app.security.auth import get_current_user
+from app.security.auth import require_user
 from app.services.data_generator import generate_dataset
 
 
@@ -176,7 +176,7 @@ async def generate_data(
     environment_id: str,
     request: DataGenerationRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(require_user)
 ):
     """
     Generate fake data and optionally seed into environment services

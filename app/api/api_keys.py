@@ -14,7 +14,7 @@ import hashlib
 from app.core.database import get_db
 from app.models.user import User
 from app.models.api_key import APIKey
-from app.security.auth import get_current_user
+from app.security.auth import require_user
 
 router = APIRouter()
 
@@ -71,7 +71,7 @@ def generate_api_key() -> tuple[str, str, str]:
 @router.post("/", response_model=CreateAPIKeyResponse, status_code=status.HTTP_201_CREATED)
 async def create_api_key(
     request: CreateAPIKeyRequest,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -114,7 +114,7 @@ async def create_api_key(
 
 @router.get("/", response_model=List[APIKeyResponse])
 async def list_api_keys(
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_user),
     db: Session = Depends(get_db)
 ):
     """List all API keys for the current user"""
@@ -129,7 +129,7 @@ async def list_api_keys(
 @router.get("/{key_id}", response_model=APIKeyResponse)
 async def get_api_key(
     key_id: int,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_user),
     db: Session = Depends(get_db)
 ):
     """Get details of a specific API key"""
@@ -151,7 +151,7 @@ async def get_api_key(
 @router.delete("/{key_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_api_key(
     key_id: int,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_user),
     db: Session = Depends(get_db)
 ):
     """Delete (revoke) an API key"""
@@ -176,7 +176,7 @@ async def delete_api_key(
 @router.patch("/{key_id}/deactivate", response_model=APIKeyResponse)
 async def deactivate_api_key(
     key_id: int,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_user),
     db: Session = Depends(get_db)
 ):
     """Deactivate an API key (can be reactivated later)"""
@@ -202,7 +202,7 @@ async def deactivate_api_key(
 @router.patch("/{key_id}/activate", response_model=APIKeyResponse)
 async def activate_api_key(
     key_id: int,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_user),
     db: Session = Depends(get_db)
 ):
     """Reactivate a deactivated API key"""
