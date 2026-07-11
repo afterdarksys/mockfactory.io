@@ -1,31 +1,86 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when working on MockFactory.
 
-## What this is
+## Product reality
 
-MockFactory (mockfactory.io) — "clouds, emulated." A FastAPI platform that started as a secure multi-language code execution sandbox and has grown into a cloud-provider emulation service: local AWS/GCP/Azure/OCI API emulators, mock data generation, DNS management, and PostgreSQL-first test environments, with OAuth2 auth, usage tiers, and Stripe billing.
+MockFactory is a self-hosted developer-platform control plane for privately owned servers. It provides disposable test environments, mock data, trusted-team code execution, and stateful AWS/OCI/GCP/Azure-compatible APIs. The initial audience is the internal engineering team plus customers consuming hosted APIs and services. Customer arbitrary-code execution is intentionally deferred.
 
-## Commands
+This repository is not currently production-ready. The root README and some historical documents overstate readiness or describe obsolete OCI/Kubernetes assumptions. Treat executable code, migrations, tests, and current Compose configuration as stronger evidence than status prose.
 
-No Makefile and no configured test framework (the `tests/` dir is empty; pytest is not in requirements.txt).
+Related repositories:
+
+- `../mockfactory-mocklib`: multi-language platform API and environment-composition layer.
+- `../mockfactory-cli`: older Python CLI focused on code execution and resource commands.
+
+An active overhaul may exist in `.worktrees/platform-overhaul` on `feature/platform-overhaul`. Never assume those changes are on `main`; inspect branches and commits first.
+
+## Current architecture
+
+- `app/main.py`: global FastAPI application and router assembly.
+- `app/api/`: authentication, payments, environments, data/DNS, and provider emulators.
+- `app/services/`: provisioning, background loops, billing, generators, DNS, and bridges.
+- `app/sandboxes/`: Docker-based trusted code execution.
+- `app/models/`: SQLAlchemy persistence.
+- `alembic/`: database migration configuration. Confirm revision files are tracked before deployment.
+- `frontend/`: static HTML/JavaScript application.
+- `docker-compose.yml`: PostgreSQL, Redis, MinIO, registry, and API.
+- `terraform/` and `ansible/`: integration prototypes, not proof of production compatibility.
+
+The desired architecture is a modular control plane with durable Redis jobs and authenticated node agents. The public API must not retain direct Docker-socket authority long term.
+
+## Local setup and verification
+
+Use Python 3.11. Do not use a production `.env` in tests.
 
 ```bash
-cp .env.example .env       # required config
-docker-compose up -d       # postgres, redis, minio, registry, api (api on :8000, /docs for OpenAPI)
-alembic upgrade head       # DB migrations — tables are Alembic-managed; never use Base.metadata.create_all()
+python3.11 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+cp .env.example .env
+docker compose up -d
+alembic upgrade head
 ```
 
-Deployment is script-driven: `deploy-staging.sh`, `deploy-production.sh`, `deploy-k8s-update.sh`, `k8s-hot-update.sh` (AWS/k8s targets; read before running — they touch real infrastructure). Ansible config lives in `ansible/`.
+On current `main`, `tests/` may be empty and pytest may not be declared. Report that honestly. On the overhaul branch use:
 
-## Architecture
+```bash
+.venv/bin/pip install -r requirements-dev.txt
+.venv/bin/pytest -q
+.venv/bin/python scripts/export_openapi.py --check
+docker compose config --quiet
+```
 
-- **`app/main.py`** — assembles the FastAPI app: HTTPS-redirect middleware (production hosts only), global rate limiting (slowapi + `app/middleware/rate_limit_middleware.py`), tenant middleware, and mounts every API router.
-- **`app/api/`** — two product families:
-  - *Code execution*: `execute.py` runs user code (Python/PHP/Perl/JS/Go/shell/HTML) inside hardened Docker containers via `app/sandboxes/docker_sandbox.py` (no root, no network, read-only FS, seccomp, resource limits — the api container mounts `/var/run/docker.sock` to spawn sandboxes).
-  - *Cloud emulation*: per-provider emulators — `aws_*` (VPC, Lambda, DynamoDB, SQS, services), `oci_*` (functions, queue, streaming, database, notifications), `gcp_emulator.py`, `azure_emulator.py`, plus `cloud_emulation.py`, `compute_emulation.py`, `container_registry_emulation.py`, `data_generation.py`, `dns_management.py`. `API_SEPARATION.md` in this dir documents the routing split.
-  - Cross-cutting: `auth.py` (After Dark Systems SSO OAuth2 + email/password), `payments.py` (Stripe tiers: Anonymous 5 runs / Free 10 / Pro $9.99 unlimited), `api_keys.py`, `client_dashboard.py`, `ai_assistant.py` (Anthropic).
-- **`app/services/`** — background_tasks (auto-shutdown of environments), environment_provisioner/provisioning_manager, data_generator (faker), dns_server, sqs_rabbitmq_bridge, credit_billing, usage_tracker.
-- **Backing services** (docker-compose): PostgreSQL (SQLAlchemy + Alembic in `alembic/`), Redis, MinIO (S3 emulation storage), and a real `registry:2` container backing the container-registry emulation.
-- **`frontend/`** — static HTML pages (index, app, dashboard, docs, tools, login).
-- README.md has the full env-var reference and architecture diagram; `docs/` contains extensive per-feature notes.
+Never claim a provider, migration, sandbox, SDK, or deployment works without running its relevant verification.
+
+## Security invariants
+
+- `Authorization: Bearer` is for user JWTs; automation uses `X-API-Key`.
+- Protected endpoints must use a dependency that rejects anonymous and inactive users.
+- Every tenant-owned query must include organization/project/user scope.
+- Never log or return credentials, tokens, connection passwords, uploaded code, or Stripe secrets.
+- The public API must not accept arbitrary Docker flags, mounts, images, or host paths.
+- Do not broaden arbitrary-code execution beyond trusted engineers without an approved sandbox milestone.
+- Long-running mutations must become idempotent operation resources rather than blocking API workers.
+- Cleanup must require both ownership labels and matching database ownership.
+- Do not trust forwarded host/protocol/client-IP headers from arbitrary peers.
+- Preserve security failure tests before refactoring authentication or tenancy.
+
+## API and compatibility rules
+
+- Canonical configurable base path: `/api/v1`.
+- Preserve stable error codes, request IDs, pagination semantics, idempotency, and operation lifecycle behavior.
+- OpenAPI is the transport contract, but MockLib contains higher-level product semantics that must not be generated away.
+- “Cloud compatible” means an official client/provider test passes for the specific advertised operations.
+- Prefer a correct, tested subset over broad unverified parity.
+- Every create path needs verified get/list/delete and orphan-cleanup behavior.
+
+## Working practices
+
+- Read `git status`, current branch, and applicable plans before editing.
+- Preserve unrelated user changes and secrets.
+- Use test-first development for behavior changes.
+- Add Alembic migrations for schema changes; never use `Base.metadata.create_all()` as deployment migration logic.
+- Avoid import-time connections to Docker, Redis, cloud services, or databases.
+- Separate API processes, scheduled jobs, and provisioning workers.
+- Update docs and compatibility matrices in the same change as behavior.
+- Historical reports in `docs/` are evidence of prior thinking, not authoritative current status.
