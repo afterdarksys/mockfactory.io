@@ -14,6 +14,7 @@ from app.core.rate_limit import limiter
 from app.middleware.rate_limit_middleware import GlobalRateLimitMiddleware
 from app.middleware.tenant_middleware import TenantMiddleware
 from app.middleware.request_id import RequestIDMiddleware
+from app.middleware.security_headers import SecurityHeadersMiddleware
 from app.core.errors import install_error_handlers
 
 # Configure logging
@@ -63,6 +64,7 @@ install_error_handlers(app)
 
 # Correlate API responses, logs, and future provisioning operations.
 app.add_middleware(RequestIDMiddleware)
+app.add_middleware(SecurityHeadersMiddleware)
 
 # HTTPS redirect middleware (must be first)
 app.add_middleware(HTTPSRedirectMiddleware)

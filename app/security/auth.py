@@ -41,6 +41,20 @@ def decode_token(token: str) -> dict:
         )
 
 
+def token_subject_as_user_id(payload: dict) -> int:
+    try:
+        user_id = int(payload.get("sub"))
+        if user_id <= 0:
+            raise ValueError
+        return user_id
+    except (TypeError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
 async def get_current_user(
     token: Optional[str] = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
@@ -50,10 +64,7 @@ async def get_current_user(
         return None
 
     payload = decode_token(token)
-    user_id: int = int(payload.get("sub"))
-
-    if user_id is None:
-        return None
+    user_id = token_subject_as_user_id(payload)
 
     user = db.query(User).filter(User.id == user_id).first()
     return user
@@ -100,7 +111,11 @@ async def verify_api_key(api_key: str, db: Session) -> Optional[User]:
         APIKey.is_active == True
     ).first()
 
-    if not api_key_record:
+    if not api_key_record or not api_key_record.is_valid():
+        return None
+
+    user = api_key_record.user
+    if not user or not user.is_active:
         return None
 
     # Update last used timestamp
@@ -108,7 +123,7 @@ async def verify_api_key(api_key: str, db: Session) -> Optional[User]:
     db.commit()
 
     # Return associated user
-    return api_key_record.user
+    return user
 
 
 async def get_user_from_request(
@@ -141,7 +156,7 @@ async def get_user_from_request(
     # Method 3: JWT token (existing oauth2_scheme)
     if token:
         payload = decode_token(token)
-        user_id: int = int(payload.get("sub"))
+        user_id = token_subject_as_user_id(payload)
         if user_id:
             user = db.query(User).filter(User.id == user_id).first()
             if user:
