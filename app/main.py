@@ -7,12 +7,14 @@ from slowapi.errors import RateLimitExceeded
 import asyncio
 import logging
 from app.core.config import settings
-from app.api import execute, auth, payments, environments, cloud_emulation, container_registry_emulation, aws_services_emulation, oci_emulation, oci_functions_emulator, oci_queue_emulator, oci_streaming_emulator, oci_database_emulator, oci_notifications_emulator, compute_emulation, data_generation, dns_management, aws_vpc_emulator, aws_lambda_emulator, aws_dynamodb_emulator, aws_sqs_emulator, api_keys, client_dashboard
+from app.api import execute, auth, payments, environments, cloud_emulation, container_registry_emulation, aws_services_emulation, oci_emulation, oci_functions_emulator, oci_queue_emulator, oci_streaming_emulator, oci_database_emulator, oci_notifications_emulator, compute_emulation, data_generation, dns_management, aws_vpc_emulator, aws_lambda_emulator, aws_dynamodb_emulator, aws_sqs_emulator, api_keys, client_dashboard, health
 from app.core.database import engine, Base
 from app.services.background_tasks import start_background_tasks
 from app.core.rate_limit import limiter
 from app.middleware.rate_limit_middleware import GlobalRateLimitMiddleware
 from app.middleware.tenant_middleware import TenantMiddleware
+from app.middleware.request_id import RequestIDMiddleware
+from app.core.errors import install_error_handlers
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -57,6 +59,10 @@ app = FastAPI(
 # Add rate limiter state
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+install_error_handlers(app)
+
+# Correlate API responses, logs, and future provisioning operations.
+app.add_middleware(RequestIDMiddleware)
 
 # HTTPS redirect middleware (must be first)
 app.add_middleware(HTTPSRedirectMiddleware)
@@ -213,6 +219,8 @@ app.include_router(
     prefix=f"{settings.API_V1_PREFIX}/dashboard",
     tags=["client-dashboard"]
 )
+
+app.include_router(health.router)
 
 # AI Assistant removed - needs anthropic SDK
 # app.include_router(

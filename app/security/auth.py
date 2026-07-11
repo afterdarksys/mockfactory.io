@@ -3,12 +3,14 @@ from typing import Optional
 from jose import JWTError, jwt
 from fastapi import Depends, Header, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import APIKeyHeader
 from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.core.database import get_db
 from app.models.user import User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_PREFIX}/auth/token", auto_error=False)
+api_key_scheme = APIKeyHeader(name="X-API-Key", auto_error=False, scheme_name="ApiKeyAuth")
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
@@ -111,7 +113,7 @@ async def verify_api_key(api_key: str, db: Session) -> Optional[User]:
 
 async def get_user_from_request(
     authorization: Optional[str] = Header(default=None, alias="Authorization"),
-    x_api_key: Optional[str] = Header(default=None, alias="X-API-Key"),
+    x_api_key: Optional[str] = Depends(api_key_scheme),
     token: Optional[str] = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
 ) -> Optional[User]:
@@ -150,7 +152,7 @@ async def get_user_from_request(
 
 async def require_authenticated_request(
     authorization: Optional[str] = Header(default=None, alias="Authorization"),
-    x_api_key: Optional[str] = Header(default=None, alias="X-API-Key"),
+    x_api_key: Optional[str] = Depends(api_key_scheme),
     token: Optional[str] = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
 ) -> User:
