@@ -63,3 +63,4 @@ seccomp_profile.json
 # Secrets (OCI credentials, API keys)
 secrets/
 !secrets.template/
+.omc/
